@@ -6,4 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CreateDockResDto {
+    private Long id;
 }

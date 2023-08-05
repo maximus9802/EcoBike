@@ -31,4 +31,6 @@ public class Bike {
 
     private Long typeId;
 
+    private Long dockId;
+
 }

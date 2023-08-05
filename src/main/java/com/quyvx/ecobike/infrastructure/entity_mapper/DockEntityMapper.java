@@ -1,9 +1,9 @@
 package com.quyvx.ecobike.infrastructure.entity_mapper;
 
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
-import com.quyvx.ecobike.domain.aggregate_models.TypeBike;
+import com.quyvx.ecobike.domain.aggregate_models.Dock;
 import com.quyvx.ecobike.infrastructure.entities.BikeEntity;
-import com.quyvx.ecobike.infrastructure.entities.TypeBikeEntity;
+import com.quyvx.ecobike.infrastructure.entities.DockEntity;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.DockJpaRepository;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.StatusJpaRepository;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.TypeBikeJpaRepository;
@@ -16,18 +16,20 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TypeBikeEntityMapper {
+public class DockEntityMapper {
     private final StatusJpaRepository statusJpaRepository;
     private final TypeBikeJpaRepository typeBikeJpaRepository;
     private final DockJpaRepository dockJpaRepository;
 
-    public TypeBikeEntity modelToEntity(TypeBike model){
-        TypeBikeEntity typeBikeEntity =  TypeBikeEntity.builder()
+    public DockEntity modelToEntity(Dock model){
+        DockEntity dockEntity = DockEntity.builder()
                 .id(model.getId())
-                .typeName(model.getTypeName())
+                .name(model.getName())
+                .description(model.getDescription())
+                .location(model.getLocation())
                 .build();
         List<BikeEntity> bikeEntities = new ArrayList<>();
-        if(ObjectUtils.isNotEmpty(model.getBikes())) {
+        if(ObjectUtils.isNotEmpty(model.getBikes())){
             bikeEntities = model.getBikes().stream()
                     .map(bike -> (BikeEntity) BikeEntity.builder()
                             .id(bike.getId())
@@ -41,18 +43,18 @@ public class TypeBikeEntityMapper {
                             .build())
                     .toList();
         }
-        typeBikeEntity.setBikeEntities(bikeEntities);
-        return typeBikeEntity;
+        dockEntity.setBikes(bikeEntities);
+        return dockEntity;
     }
 
-    public TypeBike entityToModel(TypeBikeEntity entity){
+    public Dock entityToModel(DockEntity entity){
         if (ObjectUtils.isEmpty(entity)) {
             return null;
         }
 
         List<Bike> bikes = new ArrayList<>();
-        if(ObjectUtils.isNotEmpty(entity.getBikeEntities())){
-            bikes = entity.getBikeEntities().stream()
+        if(ObjectUtils.isNotEmpty(entity.getBikes())){
+            bikes = entity.getBikes().stream()
                     .map(bikeEntity -> (Bike) Bike.builder()
                             .id(bikeEntity.getId())
                             .battery(bikeEntity.getBattery())
@@ -65,10 +67,11 @@ public class TypeBikeEntityMapper {
                             .build())
                     .toList();
         }
-
-        return TypeBike.builder()
+        return Dock.builder()
                 .id(entity.getId())
-                .typeName(entity.getTypeName())
+                .location(entity.getLocation())
+                .description(entity.getDescription())
+                .name(entity.getName())
                 .bikes(bikes)
                 .build();
     }

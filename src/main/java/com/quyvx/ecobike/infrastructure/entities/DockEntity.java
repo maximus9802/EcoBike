@@ -1,5 +1,6 @@
 package com.quyvx.ecobike.infrastructure.entities;
 
+import com.quyvx.ecobike.domain.aggregate_models.Bike;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,8 @@ public class DockEntity {
     private String location;
 
     private String name;
+
+    private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dock")
     private List<BikeEntity> bikes;
