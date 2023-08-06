@@ -1,9 +1,11 @@
 package com.quyvx.ecobike.infrastructure.entities;
 
+import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 
 @NoArgsConstructor
@@ -25,6 +27,9 @@ public class BikeEntity  {
 
     private Long battery;
 
+    @Column(name = "code", columnDefinition = "BINARY(16)")
+    private UUID code;
+
     @Column(name = "link_image")
     private String linkImage;
 
@@ -39,4 +44,7 @@ public class BikeEntity  {
     @ManyToOne
     @JoinColumn(name = "dock_id", referencedColumnName = "id")
     private DockEntity dock;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "bike")
+    private BikeTrackerEntity tracker;
 }

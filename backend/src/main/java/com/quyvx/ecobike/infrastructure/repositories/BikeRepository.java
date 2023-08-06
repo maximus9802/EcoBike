@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class BikeRepository implements IBikeRepository {
     @Override
     public Bike save(Bike model) {
         BikeEntity bikeEntity = mapper.modelToEntity(model);
+        bikeEntity.setCode(UUID.randomUUID());
         bikeEntity = bikeJpaRepository.saveAndFlush(bikeEntity);
         return mapper.entityToModel(bikeEntity);
     }

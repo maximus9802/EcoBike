@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,7 @@ public class BikeEntityMapper {
                 .battery(model.getBattery())
                 .linkImage(model.getLinkImage())
                 .description(model.getDescription())
+                .code(UUID.fromString(model.getCode()))
                 .price(model.getPrice())
                 .build();
         Optional<TypeBikeEntity> typeBikeEntity = typeBikeJpaRepository.findById(model.getTypeId());
@@ -39,6 +41,7 @@ public class BikeEntityMapper {
                 .statusId(entity.getStatus().getId())
                 .price(entity.getPrice())
                 .battery(entity.getBattery())
+                .code(entity.getCode().toString())
                 .linkImage(entity.getLinkImage())
                 .description(entity.getDescription())
                 .build();

@@ -1,11 +1,9 @@
 package com.quyvx.ecobike.api.application.commands.bike.create;
 
 import an.awesome.pipelinr.Command;
-import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
 import com.quyvx.ecobike.api.application.queries.status.StatusQueries;
-import com.quyvx.ecobike.api.application.queries.type.TypeQueries;
+import com.quyvx.ecobike.api.application.queries.typebike.TypeBikeQueries;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
-import com.quyvx.ecobike.domain.aggregate_models.StatusBike;
 import com.quyvx.ecobike.domain.aggregate_models.TypeBike;
 import com.quyvx.ecobike.domain.repositories.IBikeRepository;
 import com.quyvx.ecobike.domain.repositories.ITypeBikeRepository;
@@ -22,18 +20,18 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
 
     private final IBikeRepository bikeRepository;
     private final ITypeBikeRepository typeBikeRepository;
-    private final TypeQueries typeQueries;
+    private final TypeBikeQueries typeBikeQueries;
     private final StatusQueries statusQueries;
 
     @Override
     public Bike handle(CreateBikeCommand command) {
 
-        List<String> types = typeQueries.findAllType();
+        List<String> types = typeBikeQueries.findAllType();
 
         if(types.contains(command.getTypeName())){
             Bike bike = Bike.builder()
                     .price(command.getPrice())
-                    .typeId(typeQueries.findTypeIdByTypeName(command.getTypeName()))
+                    .typeId(typeBikeQueries.findTypeIdByTypeName(command.getTypeName()))
                     .statusId(statusQueries.findStatusIdByStatusName("free"))
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())
@@ -52,7 +50,7 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
 
             Bike bike = Bike.builder()
                     .price(command.getPrice())
-                    .typeId(typeQueries.findTypeIdByTypeName(command.getTypeName()))
+                    .typeId(typeBikeQueries.findTypeIdByTypeName(command.getTypeName()))
                     .statusId(statusQueries.findStatusIdByStatusName("free"))
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())

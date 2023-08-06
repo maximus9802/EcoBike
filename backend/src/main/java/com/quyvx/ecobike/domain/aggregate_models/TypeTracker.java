@@ -5,20 +5,16 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @SuperBuilder
 @Slf4j
-public class BikeTracker {
+public class TypeTracker {
     private Long id;
 
-    private LocalDateTime start;
+    private String name;
 
-    private LocalDateTime end;
-
-    private Long typeTrackerId;
-
-    private Long bikeId;
+    private List<BikeTracker> bikeTrackers;
 }

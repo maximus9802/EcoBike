@@ -1,6 +1,6 @@
 package com.quyvx.ecobike.infrastructure.queries;
 
-import com.quyvx.ecobike.api.application.queries.type.ITypeQueriesService;
+import com.quyvx.ecobike.api.application.queries.typebike.ITypeBikeQueriesService;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.TypeBikeJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class TypeQueriesService implements ITypeQueriesService {
+public class TypeBikeQueriesService implements ITypeBikeQueriesService {
 
     private final TypeBikeJpaRepository typeBikeJpaRepository;
     @Override

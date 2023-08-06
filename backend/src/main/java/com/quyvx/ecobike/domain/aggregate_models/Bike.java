@@ -27,6 +27,8 @@ public class Bike {
 
     private Long battery;
 
+    private String code;
+
     private Long statusId;
 
     private Long typeId;
