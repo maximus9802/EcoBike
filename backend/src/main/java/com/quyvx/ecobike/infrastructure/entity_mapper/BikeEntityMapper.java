@@ -18,14 +18,26 @@ public class BikeEntityMapper {
     private final TypeBikeJpaRepository typeBikeJpaRepository;
     private final StatusJpaRepository statusJpaRepository;
     public BikeEntity modelToEntity(Bike model) {
-        BikeEntity bikeEntity = BikeEntity.builder()
-                .id(model.getId())
-                .battery(model.getBattery())
-                .linkImage(model.getLinkImage())
-                .description(model.getDescription())
-                .code(UUID.fromString(model.getCode()))
-                .price(model.getPrice())
-                .build();
+        BikeEntity bikeEntity = new BikeEntity();
+        if(model.getCode() != null ){
+            bikeEntity = BikeEntity.builder()
+                    .id(model.getId())
+                    .battery(model.getBattery())
+                    .linkImage(model.getLinkImage())
+                    .description(model.getDescription())
+                    .code(UUID.fromString(model.getCode()))
+                    .price(model.getPrice())
+                    .build();
+        } else {
+            bikeEntity = BikeEntity.builder()
+                    .id(model.getId())
+                    .battery(model.getBattery())
+                    .linkImage(model.getLinkImage())
+                    .description(model.getDescription())
+                    .price(model.getPrice())
+                    .build();
+        }
+
         Optional<TypeBikeEntity> typeBikeEntity = typeBikeJpaRepository.findById(model.getTypeId());
         typeBikeEntity.ifPresent(bikeEntity::setType);
         
