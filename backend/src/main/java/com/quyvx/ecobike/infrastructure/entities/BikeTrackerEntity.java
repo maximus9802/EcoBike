@@ -17,9 +17,11 @@ public class BikeTrackerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime start;
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
 
-    private LocalDateTime end;
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
 
     @ManyToOne
     @JoinColumn(name= "type_tracker_id", referencedColumnName = "id")

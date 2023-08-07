@@ -30,8 +30,8 @@ public class TypeTrackerEntityMapper {
         bikes = model.getBikeTrackers().stream()
                 .map(bikeTracker -> (BikeTrackerEntity) BikeTrackerEntity.builder()
                         .id(bikeTracker.getId())
-                        .start(bikeTracker.getStart())
-                        .end(bikeTracker.getEnd())
+                        .startTime(bikeTracker.getStart())
+                        .endTime(bikeTracker.getEnd())
                         .typeTracker(typeTrackerJpaRepository.findById(bikeTracker.getTypeTrackerId()).get())
                         .bike(bikeJpaRepository.findById(bikeTracker.getBikeId()).get())
                         .build()).toList();
@@ -48,8 +48,8 @@ public class TypeTrackerEntityMapper {
         bikeTrackers = entity.getBikeTrackerEntities().stream()
                 .map(bikeTrackerEntity -> (BikeTracker) BikeTracker.builder()
                         .id(bikeTrackerEntity.getId())
-                        .start(bikeTrackerEntity.getStart())
-                        .end(bikeTrackerEntity.getEnd())
+                        .start(bikeTrackerEntity.getStartTime())
+                        .end(bikeTrackerEntity.getEndTime())
                         .bikeId(bikeTrackerEntity.getBike().getId())
                         .typeTrackerId(bikeTrackerEntity.getTypeTracker().getId())
                         .build()).toList();

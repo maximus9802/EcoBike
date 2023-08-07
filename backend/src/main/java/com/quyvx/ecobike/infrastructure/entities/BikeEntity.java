@@ -27,7 +27,7 @@ public class BikeEntity  {
 
     private Long battery;
 
-    @Column(name = "code", columnDefinition = "BINARY(16)")
+    @Column(name = "code", columnDefinition = "uuid", updatable = false)
     private UUID code;
 
     @Column(name = "link_image")
