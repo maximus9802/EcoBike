@@ -1,5 +1,5 @@
 
-const Bikes = () => {
+const DockingPoint = () => {
     return (
       <div className="bikes">
         <h2 className="">Welcome to EcoBikeRental</h2>
@@ -9,5 +9,5 @@ const Bikes = () => {
     );
   };
   
-  export default Bikes;
+  export default DockingPoint;
   
