@@ -3,7 +3,9 @@ const route = {
     HOME: "/",
     BIKES: "/bikes",
     DOCKS: "/docks",
-    RETURN_BIKE: "/return-bikes"
+    RETURN_BIKE: "/return-bikes",
+    RENT: "/rent",
+    CARD: "/card",
 };
 
 export default route;
