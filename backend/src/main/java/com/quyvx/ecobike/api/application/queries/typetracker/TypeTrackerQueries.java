@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class TypeTrackerQueries {
+    private final ITypeTrackerQueriesService typeTrackerQueriesService;
+
+
 }

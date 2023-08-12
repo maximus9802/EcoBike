@@ -1,10 +1,11 @@
 const route = {
     ADMIN: "/admin",
     HOME: "/",
-    DOCK: "/dock",
-    DOCKINGPOINT: "/dockingpoint",
+    RETURN_BIKE: "/return-bikes",
     RENT: "/rent",
     CARD: "/card",
+    DOCK: "/dock",
+    DOCKINGPOINT: "/dockingpoint",
 };
 
 export default route;

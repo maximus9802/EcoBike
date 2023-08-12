@@ -22,6 +22,7 @@ public class BikeTrackerEntityMapper {
                 .id(model.getId())
                 .startTime(model.getStart())
                 .endTime(model.getEnd())
+                .statusTracker(model.getStatus())
                 .build();
         Optional<BikeEntity> bikeEntity = bikeJpaRepository.findById(model.getBikeId());
         bikeEntity.ifPresent(entity::setBike);
@@ -37,6 +38,7 @@ public class BikeTrackerEntityMapper {
                 .start(entity.getStartTime())
                 .end(entity.getEndTime())
                 .bikeId(entity.getBike().getId())
+                .status(entity.getStatusTracker())
                 .typeTrackerId(entity.getTypeTracker().getId())
                 .build();
     }

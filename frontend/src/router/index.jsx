@@ -2,10 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import route from "../constants/route";
 import DefaultLayout from "../components/DefaultLayout";
 import Home from "../pages/home/Home";
-import DockingPoint from "../pages/dockingpoint/DockingPoint";
-import Dock from "../pages/dock/Dock";
+import ReturnBikePage from "../pages/ReturnBike/ReturnBikePage";
 import RENT from "../pages/rent/Rent";
 import CARD from "../pages/card/Card";
+import DockingPoint from "../pages/dockingpoint/DockingPoint";
+import Dock from "../pages/dock/Dock";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: route.DOCKINGPOINT,
                 element: <DockingPoint/>,
+            },
+            {
+                path: route.RETURN_BIKE,
+                element: <ReturnBikePage/>,
             },
             {
                 path: route.RENT,

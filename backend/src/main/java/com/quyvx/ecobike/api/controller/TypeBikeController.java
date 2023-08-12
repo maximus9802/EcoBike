@@ -2,6 +2,7 @@ package com.quyvx.ecobike.api.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/api/typebikes")
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 public class TypeBikeController {
 
     @PostMapping()

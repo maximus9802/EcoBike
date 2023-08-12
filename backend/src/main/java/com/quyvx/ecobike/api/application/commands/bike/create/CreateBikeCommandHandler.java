@@ -36,6 +36,9 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())
                     .battery(command.getBattery())
+                    .dockId(1L)
+                    .licensePlate(command.getLicensePlate())
+                    .deposit(command.getDeposit())
                     .build();
             Bike savedBike = bikeRepository.save(bike);
             log.info("----- CreateBikeCommandHandler: eco bike was created: {}", savedBike.getId());
@@ -55,6 +58,9 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())
                     .battery(command.getBattery())
+                    .dockId(1L)
+                    .licensePlate(command.getLicensePlate())
+                    .deposit(command.getDeposit())
                     .build();
             Bike savedBike = bikeRepository.save(bike);
             log.info("----- CreateBikeCommandHandler: {} type bike was created: {}", newTypeBike.getTypeName() ,savedBike.getId());

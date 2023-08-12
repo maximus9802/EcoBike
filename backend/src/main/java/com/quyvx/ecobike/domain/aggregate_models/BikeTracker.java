@@ -21,4 +21,6 @@ public class BikeTracker {
     private Long typeTrackerId;
 
     private Long bikeId;
+
+    private String status;
 }

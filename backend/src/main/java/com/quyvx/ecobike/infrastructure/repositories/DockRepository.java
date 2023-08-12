@@ -8,6 +8,7 @@ import com.quyvx.ecobike.infrastructure.jpa_repositories.DockJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +31,12 @@ public class DockRepository implements IDockRepository {
     @Override
     public Optional<Dock> findById(Long id) {
         return dockJpaRepository.findById(id).map(mapper::entityToModel);
+    }
+
+    @Override
+    public List<Dock> findAll() {
+        return dockJpaRepository.findAll().stream()
+                .map(mapper::entityToModel)
+                .toList();
     }
 }
