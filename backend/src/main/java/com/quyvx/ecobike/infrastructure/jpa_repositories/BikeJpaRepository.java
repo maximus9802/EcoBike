@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +25,6 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, Long>, JpaS
             "LEFT JOIN type_bike as tb ON b.type_id = tb.id " +
             "WHERE b.id = :id", nativeQuery = true)
     Optional<BikeDetails> findByWithoutTracker(@Param("id") Long id);
+
+    List<BikeEntity> findAll();
 }

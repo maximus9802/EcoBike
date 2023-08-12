@@ -4,6 +4,8 @@ import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class BikeQueries {
@@ -15,6 +17,10 @@ public class BikeQueries {
 
     public BikeDetails getBikeDetailsById(Long id){
         return bikeQueriesService.findBikeWithoutTracker(id).orElseThrow(() -> new RuntimeException("bike not found"));
+    }
+
+    public List<BikeDetails> getAllBikeDetails() {
+        return bikeQueriesService.getAllBikeDetails();
     }
 
 }

@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @AllArgsConstructor
 @RequestMapping("/api/bikes")
@@ -42,5 +44,10 @@ public class BikeController {
     public BikeDetails getBikeById(@PathVariable Long id){
         if(bikeService.checkBikeFree(id)) return bikeQueries.getBikeDetailsById(id);
         return null;
+    }
+
+    @GetMapping("")
+    public List<BikeDetails> getAllBike() {
+        return bikeQueries.getAllBikeDetails();
     }
 }
