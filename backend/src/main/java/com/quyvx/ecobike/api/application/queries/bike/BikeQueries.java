@@ -22,11 +22,4 @@ public class BikeQueries {
         return bikeQueriesService.findBikeWithoutTracker(id).orElseThrow(() -> new RuntimeException("bike not found"));
     }
 
-    public List<BikeDetails> getAllBikeDetails() {
-        return bikeQueriesService.getAllBikeDetails();
-    }
-
-    public Bike getBikeById(long id) {
-        return bikeRepository.findById(id).orElse(null);
-    }
 }

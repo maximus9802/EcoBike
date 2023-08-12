@@ -3,6 +3,9 @@ package com.quyvx.ecobike.api.application.services;
 import com.quyvx.ecobike.api.application.models.tracker.RentInfo;
 import com.quyvx.ecobike.api.application.queries.biketracker.IBikeTrackerQueriesService;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
+import com.quyvx.ecobike.api.application.queries.typetracker.TypeTrackerQueries;
+import com.quyvx.ecobike.api.dto.tracker.AssignTrackerRes;
+import com.quyvx.ecobike.domain.aggregate_models.Bike;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
 import com.quyvx.ecobike.infrastructure.repositories.BikeTrackerRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,21 +55,20 @@ public class TrackerService {
         return Double.valueOf(cash * getFeeFactor(typeRent)).longValue();
     }
 
-    private double getFeeFactor(String typeRent) {
-        if (typeRent.equals("Standard bike")) {
-            return STANDARD_BIKE_FACTOR;
-        } else if (typeRent.equals("E-bike") || typeRent.equals("Twin bike")) {
-            return EBIKE_AND_TWIN_FACTOR;
-        }
-        return INVALID_TYPE_BIKE;
+    public RentInfo viewRentInfoToNow(Long bikeId){
+        Optional<BikeTracker> bikeTracker = bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId));
+        RentInfo rentInfo = RentInfo.builder()
+                .typeRent(typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.get().getTypeTrackerId()))
+                .startTime(bikeTracker.get().getStart())
+                .duration(calculateDuration(bikeTracker.get().getStart(), LocalDateTime.now()))
+                .cast(100012L)
+                .build();
+        return rentInfo;
     }
 
 
-    public BikeTracker rentBike(long typeTrackerId, long bikeId) {
-        BikeTracker saveTracker = bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId);
-        saveTracker.setStart(LocalDateTime.now());
-        saveTracker.setStatus(BikeTracker.ACTIVE_STATUS);
-        saveTracker.setTypeTrackerId(typeTrackerId);
-        return bikeTrackerRepository.save(saveTracker);
+
+    public long calculateDuration(LocalDateTime start, LocalDateTime end){
+        return Duration.between(start, end).toMinutes();
     }
 }
