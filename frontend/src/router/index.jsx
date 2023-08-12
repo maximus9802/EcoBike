@@ -4,6 +4,8 @@ import DefaultLayout from "../components/DefaultLayout";
 import Home from "../pages/home/Home";
 import DockingPoint from "../pages/dockingpoint/DockingPoint";
 import Dock from "../pages/dock/Dock";
+import RENT from "../pages/rent/Rent";
+import CARD from "../pages/card/Card";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
             {
                 path: route.DOCKINGPOINT,
                 element: <DockingPoint/>,
+            },
+            {
+                path: route.RENT,
+                element: <RENT />,
+            },
+            {
+                path: route.CARD,
+                element: <CARD />,
             },
         ],
     },
