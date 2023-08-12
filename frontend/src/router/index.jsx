@@ -5,6 +5,9 @@ import Home from "../pages/home/Home";
 import BIKES from "../pages/bike/Bikes";
 import DOCKS from "../pages/dock/Docks";
 import ReturnBikePage from "../pages/ReturnBike/ReturnBikePage";
+import RENT from "../pages/rent/Rent";
+import CARD from "../pages/card/Card";
+
 
 const router = createBrowserRouter([
     {
@@ -25,8 +28,16 @@ const router = createBrowserRouter([
             },
             {
                 path: route.RETURN_BIKE,
-                element: <ReturnBikePage/>
-            }
+                element: <ReturnBikePage/>,
+            },
+            {
+                path: route.RENT,
+                element: <RENT />,
+            },
+            {
+                path: route.CARD,
+                element: <CARD />,
+            },
         ],
     },
 ]);
