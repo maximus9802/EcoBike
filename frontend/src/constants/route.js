@@ -3,6 +3,7 @@ const route = {
     HOME: "/",
     BIKES: "/bikes",
     DOCKS: "/docks",
+    RETURN_BIKE: "/return-bikes"
 };
 
 export default route;
