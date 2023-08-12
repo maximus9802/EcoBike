@@ -4,12 +4,15 @@ const DockItem = (props) => {
     const handleClick = () => {
         console.log("click")
     }
+    const { item } = props.item;
+    console.log(item)
+    console.log(props.item)
     return(
         <div className='font-semibold p-2 bg-yellow-300 hover:bg-yellow-100 hover:cursor-pointer' onClick={handleClick}>
-            <div>Dock name</div>
+            <div>{props.item.name}</div>
             <div className="text-sm italic">
             <FontAwesomeIcon icon={faLocationDot} />
-                <span> Dock location</span>
+                <span> {props.item.location}</span>
             </div>
         </div>
     )
