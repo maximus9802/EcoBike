@@ -13,8 +13,8 @@ const MenuBar = () => {
           className="border rounded px-2 py-1 mr-2"
         />
         {/* <Link to="/rentals" className="text-white">Rentals</Link> */}
-        <Link to="/bikes" className="text-white ml-4">Bikes</Link>
-        <Link to="/docks" className="text-white ml-4">Docks</Link>
+        <Link to="/dockingpoint" className="text-white ml-4">Bikes</Link>
+        <Link to="/dock" className="text-white ml-4">Docks</Link>
         {/* Add more navigation links */}
       </div>
     </nav>
