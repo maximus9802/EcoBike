@@ -35,4 +35,8 @@ public class Bike {
 
     private Long dockId;
 
+    private String licensePlate;
+
+    private BigDecimal deposit;
+
 }

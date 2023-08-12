@@ -23,6 +23,9 @@ public class BikeTrackerEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "status_tracker")
+    private String statusTracker;
+
     @ManyToOne
     @JoinColumn(name= "type_tracker_id", referencedColumnName = "id")
     private TypeTrackerEntity typeTracker;

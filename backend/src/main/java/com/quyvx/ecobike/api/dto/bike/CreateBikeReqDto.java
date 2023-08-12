@@ -11,4 +11,6 @@ public class CreateBikeReqDto {
     private BigDecimal price;
     private String linkImage;
     private Long battery;
+    private String licensePlate;
+    private BigDecimal deposit;
 }

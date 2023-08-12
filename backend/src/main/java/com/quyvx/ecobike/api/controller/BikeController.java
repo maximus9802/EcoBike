@@ -26,9 +26,11 @@ public class BikeController {
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){
         CreateBikeCommand command = CreateBikeCommand.builder()
                 .typeName(request.getTypeName())
-                .description(request.getDescription())
                 .linkImage(request.getLinkImage())
                 .price(request.getPrice())
+                .licensePlate(request.getLicensePlate())
+                .deposit(request.getDeposit())
+                .description(request.getDescription())
                 .battery(request.getBattery())
                 .build();
         Bike savedBike = pipeline.send(command);
