@@ -1,4 +1,4 @@
-package com.quyvx.ecobike.api.application.commands.bike.create;
+package com.quyvx.ecobike.api.application.commands.bike.update;
 
 import an.awesome.pipelinr.Command;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
@@ -9,12 +9,14 @@ import java.math.BigDecimal;
 
 @Builder
 @Getter
-public class CreateBikeCommand implements Command<Bike>{
-    private String typeName;
+public class UpdateBikeCommand implements Command<Bike> {
+    private Long id;
     private String description;
     private BigDecimal price;
     private String linkImage;
     private Long battery;
-    private String licensePlate;
-    private BigDecimal deposit;
+    private String code;
+    private Long statusId;
+    private Long typeId;
+    private Long dockId;
 }

@@ -33,6 +33,11 @@ public class BikeEntity  {
     @Column(name = "link_image")
     private String linkImage;
 
+    @Column(name = "license_plate")
+    private String licensePlate;
+
+    private BigDecimal deposit;
+
     @ManyToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     private TypeBikeEntity type;
