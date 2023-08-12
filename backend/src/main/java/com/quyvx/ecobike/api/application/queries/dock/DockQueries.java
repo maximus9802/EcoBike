@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -14,6 +15,10 @@ public class DockQueries {
 
     public List<Dock> getAllDocks() {
         return dockRepository.findAll();
+    }
+
+    public Optional<Dock> getDockById(long id) {
+        return dockRepository.findById(id);
     }
 
 }
