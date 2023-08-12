@@ -1,8 +1,8 @@
 const route = {
     ADMIN: "/admin",
     HOME: "/",
-    BIKES: "/bikes",
-    DOCKS: "/docks",
+    DOCK: "/dock",
+    DOCKINGPOINT: "/dockingpoint",
     RENT: "/rent",
     CARD: "/card",
 };

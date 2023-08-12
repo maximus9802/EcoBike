@@ -1,5 +1,5 @@
 
-const Docks = () => {
+const Dock = () => {
     return (
       <div className="bikes">
         <h2 className="">Welcome to EcoBikeRental</h2>
@@ -9,5 +9,5 @@ const Docks = () => {
     );
   };
   
-  export default Docks;
+  export default Dock;
   
