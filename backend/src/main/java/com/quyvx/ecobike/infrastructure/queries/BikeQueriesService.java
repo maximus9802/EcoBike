@@ -5,9 +5,9 @@ import com.quyvx.ecobike.api.application.queries.bike.IBikeQueriesService;
 import com.quyvx.ecobike.infrastructure.entities.BikeEntity;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.BikeJpaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -28,5 +28,11 @@ public class BikeQueriesService implements IBikeQueriesService {
     @Override
     public Optional<BikeDetails> findBikeWithoutTracker(Long id) {
         return bikeJpaRepository.findByWithoutTracker(id);
+    }
+
+    public List<BikeDetails> getAllBikeDetails() {
+        return bikeJpaRepository.findAll().stream()
+                .map(bikeEntity -> findBikeWithoutTracker(bikeEntity.getId()).orElse(null))
+                .toList();
     }
 }

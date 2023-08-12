@@ -8,7 +8,6 @@ import com.quyvx.ecobike.api.application.models.tracker.TrackerDetails;
 import com.quyvx.ecobike.api.application.queries.biketracker.IBikeTrackerQueriesService;
 import com.quyvx.ecobike.api.application.queries.status.IStatusQueriesService;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
-import com.quyvx.ecobike.api.application.queries.typetracker.TypeTrackerQueries;
 import com.quyvx.ecobike.api.dto.tracker.AssignTrackerRes;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
@@ -82,17 +81,17 @@ public class TrackerService {
     }
 
     public RentInfo viewRentInfoToNow(Long bikeId){
-        Optional<BikeTracker> bikeTracker = bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId));
-        RentInfo rentInfo = RentInfo.builder()
-                .typeRent(typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.get().getTypeTrackerId()))
-                .startTime(bikeTracker.get().getStart())
-                .duration(calculateDuration(bikeTracker.get().getStart(), LocalDateTime.now()))
-                .cast(100012L)
-                .build();
-        return rentInfo;
+        BikeTracker bikeTracker = bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId))
+                .orElse(null);
+        if (bikeTracker != null) {
+            return RentInfo.builder()
+                    .typeRent(typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.getTypeTrackerId()))
+                    .startTime(bikeTracker.getStart())
+                    .duration(calculateDuration(bikeTracker.getStart(), LocalDateTime.now()))
+                    .cast(100012L)
+                    .build();
+        } else return null;
     }
-
-
 
     public long calculateDuration(LocalDateTime start, LocalDateTime end){
         return Duration.between(start, end).toMinutes();
