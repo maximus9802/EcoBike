@@ -11,7 +11,7 @@ import javax.print.DocFlavor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tracker")
-@CrossOrigin(origins = "http://127.0.0.1:5173")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TrackerController {
     private final TrackerService trackerService;
 
