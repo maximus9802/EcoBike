@@ -3,7 +3,6 @@ package com.quyvx.ecobike.api.application.services;
 import com.quyvx.ecobike.api.application.models.tracker.RentInfo;
 import com.quyvx.ecobike.api.application.queries.biketracker.IBikeTrackerQueriesService;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
-import com.quyvx.ecobike.api.application.queries.typetracker.TypeTrackerQueries;
 import com.quyvx.ecobike.api.dto.tracker.AssignTrackerRes;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
@@ -68,7 +67,26 @@ public class TrackerService {
 
 
 
-    public long calculateDuration(LocalDateTime start, LocalDateTime end){
+    private long calculateDuration(LocalDateTime start, LocalDateTime end){
         return Duration.between(start, end).toMinutes();
+    }
+
+    private long calculateCash(long duration, String typeRent) {
+        long cash = 0L;
+        if (duration > 10 && duration <= 30) {
+            cash += 10000;
+        } else if (duration > 30) {
+            cash += 10000 + ((duration - 30)/10 + 1) * 3000;
+        }
+        return Double.valueOf(cash * getFeeFactor(typeRent)).longValue();
+    }
+
+    private double getFeeFactor(String typeRent) {
+        if (typeRent.equals("Standard bike")) {
+            return STANDARD_BIKE_FACTOR;
+        } else if (typeRent.equals("E-bike") || typeRent.equals("Twin bike")) {
+            return EBIKE_AND_TWIN_FACTOR;
+        }
+        return INVALID_TYPE_BIKE;
     }
 }

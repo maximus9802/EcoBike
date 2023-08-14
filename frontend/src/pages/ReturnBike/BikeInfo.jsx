@@ -8,7 +8,6 @@ const BikeInfo = () => {
         const bikeInfoUrl = `http://localhost:6868/api/bikes/3`
         const bikeTrackerUrl = `http://localhost:6868/api/tracker/${id}`
         axios.get(bikeInfoUrl).then((response) => {
-            console.log(response);
             setBike(response.data);
         }).catch((error) => {
             console.error(error);
