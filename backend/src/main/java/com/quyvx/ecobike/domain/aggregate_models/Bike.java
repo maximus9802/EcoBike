@@ -1,9 +1,5 @@
 package com.quyvx.ecobike.domain.aggregate_models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +12,6 @@ import java.math.BigDecimal;
 @SuperBuilder
 @Slf4j
 public class Bike {
-
     private Long id;
 
     private String description;
@@ -39,4 +34,5 @@ public class Bike {
 
     private BigDecimal deposit;
 
+    private BikeTracker bikeTracker;
 }

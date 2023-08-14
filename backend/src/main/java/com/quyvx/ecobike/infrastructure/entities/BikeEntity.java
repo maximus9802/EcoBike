@@ -1,6 +1,5 @@
 package com.quyvx.ecobike.infrastructure.entities;
 
-import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
 import jakarta.persistence.*;
 import lombok.*;
 
