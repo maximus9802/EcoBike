@@ -2,6 +2,7 @@ package com.quyvx.ecobike.api.application.commands.bike.create;
 
 import an.awesome.pipelinr.Command;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
+import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,4 +18,5 @@ public class CreateBikeCommand implements Command<Bike>{
     private Long battery;
     private String licensePlate;
     private BigDecimal deposit;
+    private BikeTracker bikeTracker;
 }

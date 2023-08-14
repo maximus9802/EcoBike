@@ -12,6 +12,8 @@ import java.util.List;
 @SuperBuilder
 @Slf4j
 public class TypeTracker {
+    public static final long MINUTE_TRACKER_ID = 2L;
+    public static final long DAY_TRACKER_ID = 3L;
     private Long id;
 
     private String name;
