@@ -8,6 +8,8 @@ import com.quyvx.ecobike.infrastructure.jpa_repositories.CardJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class CardRepository implements ICardRepository {
@@ -17,5 +19,10 @@ public class CardRepository implements ICardRepository {
     public Card save(Card card) {
         CardEntity entity = cardJpaRepository.saveAndFlush(mapper.modelToEntity(card));
         return mapper.entityToModel(entity);
+    }
+
+    @Override
+    public Optional<Card> findByCardCode(String cardCode) {
+        return cardJpaRepository.findById(cardCode).map(mapper::entityToModel);
     }
 }

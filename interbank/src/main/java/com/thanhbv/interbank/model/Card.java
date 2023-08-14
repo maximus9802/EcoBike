@@ -1,4 +1,4 @@
-package com.quyvx.ecobike.infrastructure.entities;
+package com.thanhbv.interbank.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "card")
-public class CardEntity {
+public class Card {
     @Id
     @Column(name = "card_code", unique = true)
     private String cardCode;
