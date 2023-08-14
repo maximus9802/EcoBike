@@ -8,11 +8,11 @@
 		<version>3.1.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.quyvx</groupId>
-	<artifactId>ecobike</artifactId>
+	<groupId>com.thanhbv</groupId>
+	<artifactId>interbank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ecobike</name>
-	<description>Demo project for Spring Boot</description>
+	<name>interbank</name>
+	<description>Interbank for EcoBike Project</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -49,11 +49,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.thanhbv</groupId>
-			<artifactId>interbank</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

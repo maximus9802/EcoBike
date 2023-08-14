@@ -12,8 +12,11 @@ public class CardEntityMapper {
         return CardEntity.builder()
                 .cardCode(card.getCardCode())
                 .cardHolderName(card.getCardHolderName())
+                .cvvCode(card.getCvvCode())
+                .dateExpired(card.getDateExpired())
                 .balance(card.getBalance())
                 .secretToken(card.getSecretToken())
+                .appCode(card.getAppCode())
                 .build();
     }
 
@@ -21,8 +24,11 @@ public class CardEntityMapper {
         return Card.builder()
                 .cardCode(entity.getCardCode())
                 .cardHolderName(entity.getCardHolderName())
+                .cvvCode(entity.getCvvCode())
+                .dateExpired(entity.getDateExpired())
                 .balance(entity.getBalance())
                 .secretToken(entity.getSecretToken())
+                .appCode(entity.getAppCode())
                 .build();
     }
 }
