@@ -3,11 +3,8 @@ package com.quyvx.ecobike.infrastructure.entity_mapper;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
 import com.quyvx.ecobike.domain.aggregate_models.TypeTracker;
 import com.quyvx.ecobike.infrastructure.entities.BikeTrackerEntity;
-import com.quyvx.ecobike.infrastructure.entities.TypeBikeEntity;
 import com.quyvx.ecobike.infrastructure.entities.TypeTrackerEntity;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.BikeJpaRepository;
-import com.quyvx.ecobike.infrastructure.jpa_repositories.BikeTrackerJpaRepository;
-import com.quyvx.ecobike.infrastructure.jpa_repositories.TypeBikeJpaRepository;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.TypeTrackerJpaRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -44,8 +41,7 @@ public class TypeTrackerEntityMapper {
             return null;
         }
 
-        List<BikeTracker> bikeTrackers = new ArrayList<>();
-        bikeTrackers = entity.getBikeTrackerEntities().stream()
+        List<BikeTracker> bikeTrackers = entity.getBikeTrackerEntities().stream()
                 .map(bikeTrackerEntity -> (BikeTracker) BikeTracker.builder()
                         .id(bikeTrackerEntity.getId())
                         .start(bikeTrackerEntity.getStartTime())
