@@ -23,8 +23,7 @@ public class TypeTrackerEntityMapper {
                 .id(model.getId())
                 .name(model.getName())
                 .build();
-        List<BikeTrackerEntity> bikes = new ArrayList<>();
-        bikes = model.getBikeTrackers().stream()
+        List<BikeTrackerEntity> bikes =  model.getBikeTrackers().stream()
                 .map(bikeTracker -> (BikeTrackerEntity) BikeTrackerEntity.builder()
                         .id(bikeTracker.getId())
                         .startTime(bikeTracker.getStart())

@@ -26,7 +26,7 @@ public class BikeTrackerEntity {
     @Column(name = "status_tracker")
     private String statusTracker;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name= "type_tracker_id", referencedColumnName = "id")
     private TypeTrackerEntity typeTracker;
 
