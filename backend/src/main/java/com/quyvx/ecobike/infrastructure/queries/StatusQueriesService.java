@@ -11,7 +11,7 @@ public class StatusQueriesService implements IStatusQueriesService {
 
     private final StatusJpaRepository statusJpaRepository;
     @Override
-    public Long finStatusIdByStatusName(String statusName) {
+    public Long findStatusIdByStatusName(String statusName) {
         return statusJpaRepository.findStatusIdByStatusName(statusName);
     }
 }
