@@ -1,5 +1,7 @@
 package com.quyvx.ecobike.api.application.models.bike;
 
+import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
+
 import java.math.BigDecimal;
 
 public interface BikeDetails {
@@ -15,4 +17,5 @@ public interface BikeDetails {
     String getCode();
     String getLicensePlate();
     BigDecimal getDeposit();
+    BikeTracker getBikeTracker();
 }

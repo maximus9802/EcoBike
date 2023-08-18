@@ -9,6 +9,6 @@ public class StatusQueries {
     private final IStatusQueriesService statusQueriesService;
 
     public Long findStatusIdByStatusName(String statusName){
-        return statusQueriesService.finStatusIdByStatusName(statusName);
+        return statusQueriesService.findStatusIdByStatusName(statusName);
     }
 }

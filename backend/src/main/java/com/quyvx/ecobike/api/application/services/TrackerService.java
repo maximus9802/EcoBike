@@ -1,17 +1,9 @@
 package com.quyvx.ecobike.api.application.services;
 
-import an.awesome.pipelinr.Pipeline;
-import com.quyvx.ecobike.api.application.commands.bike.update.UpdateBikeCommand;
-import com.quyvx.ecobike.api.application.commands.tracker.update.UpdateTrackerCommand;
 import com.quyvx.ecobike.api.application.models.tracker.RentInfo;
-import com.quyvx.ecobike.api.application.models.tracker.TrackerDetails;
 import com.quyvx.ecobike.api.application.queries.biketracker.IBikeTrackerQueriesService;
-import com.quyvx.ecobike.api.application.queries.status.IStatusQueriesService;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
-import com.quyvx.ecobike.api.dto.tracker.AssignTrackerRes;
-import com.quyvx.ecobike.domain.aggregate_models.Bike;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
-import com.quyvx.ecobike.infrastructure.repositories.BikeRepository;
 import com.quyvx.ecobike.infrastructure.repositories.BikeTrackerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,81 +11,52 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class TrackerService {
+    public static final int STANDARD_BIKE_FACTOR = 1;
+    public static final double EBIKE_AND_TWIN_FACTOR = 1.5;
+    public static final int INVALID_TYPE_BIKE = -1;
     private final IBikeTrackerQueriesService bikeTrackerQueriesService;
     private final BikeTrackerRepository bikeTrackerRepository;
     private final ITypeTrackerQueriesService typeTrackerQueriesService;
-    private final IStatusQueriesService statusQueriesService;
-    private final BikeRepository bikeRepository;
-    private final Pipeline pipeline;
-    public AssignTrackerRes assignTracker(String typeTracker, Long id){
-        List<TrackerDetails> list = bikeTrackerQueriesService.listTrackerByStatus("free");
-        Optional<Bike> bike = bikeRepository.findById(id);
-        UpdateBikeCommand bikeCommand = UpdateBikeCommand.builder()
-                .id(bike.get().getId())
-                .price(bike.get().getPrice())
-                .linkImage(bike.get().getLinkImage())
-                .description(bike.get().getDescription())
-                .code(bike.get().getCode())
-                .typeId(bike.get().getTypeId())
-                .statusId(statusQueriesService.finStatusIdByStatusName("rented"))
-                .dockId(0L)
-                .battery(bike.get().getBattery())
-                .build();
-        if(list.isEmpty()){
-            BikeTracker bikeTracker = BikeTracker.builder()
-                    .start(LocalDateTime.now())
-                    .end(null)
-                    .typeTrackerId(typeTrackerQueriesService.findTypeIdByTypeName(typeTracker))
-                    .bikeId(id)
-                    .status("active")
-                    .build();
-            bikeTracker = bikeTrackerRepository.save(bikeTracker);
-            pipeline.send(bikeCommand);
-            log.info("----- TrackerService: assign bike to new tracker successful");
-            return AssignTrackerRes.builder()
-                    .trackerId(bikeTracker.getId())
-                    .build();
-        }
-        else {
-            TrackerDetails trackerDetails = list.get(0);
-            UpdateTrackerCommand command = UpdateTrackerCommand.builder()
-                    .id(trackerDetails.getId())
-                    .start(LocalDateTime.now())
-                    .end(null)
-                    .typeTrackerId(typeTrackerQueriesService.findTypeIdByTypeName(typeTracker))
-                    .bikeId(id)
-                    .status("active")
-                    .build();
-            BikeTracker savedBikeTracker = pipeline.send(command);
-            pipeline.send(bikeCommand);
-            log.info("----- TrackerService: assign bike to tracker successful");
-            return AssignTrackerRes.builder()
-                    .trackerId(savedBikeTracker.getId())
-                    .build();
-        }
-    }
-
     public RentInfo viewRentInfoToNow(Long bikeId){
         BikeTracker bikeTracker = bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId))
                 .orElse(null);
         if (bikeTracker != null) {
+            long duration = calculateDuration(bikeTracker.getStart(), LocalDateTime.now());
+            String typeRent = typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.getTypeTrackerId());
             return RentInfo.builder()
-                    .typeRent(typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.getTypeTrackerId()))
+                    .typeRent(typeRent)
                     .startTime(bikeTracker.getStart())
-                    .duration(calculateDuration(bikeTracker.getStart(), LocalDateTime.now()))
-                    .cast(100012L)
+                    .duration(duration)
+                    .cast(calculateCash(duration, typeRent))
                     .build();
         } else return null;
     }
 
-    public long calculateDuration(LocalDateTime start, LocalDateTime end){
+    private long calculateDuration(LocalDateTime start, LocalDateTime end){
         return Duration.between(start, end).toMinutes();
+    }
+
+    private long calculateCash(long duration, String typeRent) {
+        long cash = 0L;
+        if (duration > 10 && duration <= 30) {
+            cash += 10000;
+        } else if (duration > 30) {
+            cash += 10000 + ((duration - 30)/10 + 1) * 3000;
+        }
+        return Double.valueOf(cash * getFeeFactor(typeRent)).longValue();
+    }
+
+    private double getFeeFactor(String typeRent) {
+        if (typeRent.equals("Standard bike")) {
+            return STANDARD_BIKE_FACTOR;
+        } else if (typeRent.equals("E-bike") || typeRent.equals("Twin bike")) {
+            return EBIKE_AND_TWIN_FACTOR;
+        }
+        return INVALID_TYPE_BIKE;
     }
 }
