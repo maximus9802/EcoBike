@@ -1,9 +1,10 @@
 package com.quyvx.ecobike.infrastructure.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
-
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,12 +29,4 @@ public class CardEntity {
 
     @Column(name = "balance")
     private long balance;
-
-    @Column(name = "secret_code", columnDefinition = "uuid", updatable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID secretToken;
-
-    @Column(name = "app_code", columnDefinition = "uuid", updatable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID appCode;
 }

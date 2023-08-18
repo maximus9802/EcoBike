@@ -1,6 +1,5 @@
-package com.thanhbv.interbank.dto;
+package com.quyvx.ecobike.api.dto.card;
 
-import com.quyvx.ecobike.api.dto.card.TransactionDto;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,13 +10,13 @@ import java.util.UUID;
 @Getter
 @EqualsAndHashCode
 public class HashTransactionDto {
-    private UUID secretKey;
+    private String secretKey;
     private TransactionDto transactionDto;
 
     @Override
     public String toString() {
         return "HashTransactionDto{" +
-                "secretKey=" + secretKey.toString() +
+                "secretKey=" + secretKey +
                 ", transactionDto=" + transactionDto.toString() +
                 '}';
     }

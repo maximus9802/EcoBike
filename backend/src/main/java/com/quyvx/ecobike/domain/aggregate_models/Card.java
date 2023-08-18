@@ -17,6 +17,4 @@ public class Card {
     private String cvvCode;
     private String dateExpired;
     private long balance;
-    private UUID secretToken;
-    private UUID appCode;
 }

@@ -13,6 +13,4 @@ import java.util.UUID;
 public interface CardRepository extends JpaRepository<Card, String> {
     Card save(Card card);
     Optional<Card> findById(String cardCode);
-    @Query(value = "select secret_code from card where app_code = :appCode", nativeQuery = true)
-    Optional<UUID> findBySecretCode(@Param("appCode") UUID appCode);
 }

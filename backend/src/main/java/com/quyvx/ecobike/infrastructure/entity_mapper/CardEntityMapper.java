@@ -15,8 +15,6 @@ public class CardEntityMapper {
                 .cvvCode(card.getCvvCode())
                 .dateExpired(card.getDateExpired())
                 .balance(card.getBalance())
-                .secretToken(card.getSecretToken())
-                .appCode(card.getAppCode())
                 .build();
     }
 
@@ -27,8 +25,6 @@ public class CardEntityMapper {
                 .cvvCode(entity.getCvvCode())
                 .dateExpired(entity.getDateExpired())
                 .balance(entity.getBalance())
-                .secretToken(entity.getSecretToken())
-                .appCode(entity.getAppCode())
                 .build();
     }
 }

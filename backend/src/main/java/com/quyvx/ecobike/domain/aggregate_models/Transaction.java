@@ -10,13 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 @SuperBuilder
 @Slf4j
 public class Transaction {
-    private long id;
     private String cardCode;
     private String owner;
     private String cvvCode;
     private String dateExpired;
     private String command;
+    private String transactionId;
     private String transactionContent;
     private long amount;
     private String createdAt;
+    private int errorCode;
 }
