@@ -1,9 +1,6 @@
 package com.thanhbv.interbank.service;
 
-import com.thanhbv.interbank.dto.HashTransactionDto;
-import com.thanhbv.interbank.dto.ProcessTransactionReqDto;
-import com.thanhbv.interbank.dto.ProcessTransactionResDto;
-import com.thanhbv.interbank.dto.ResetBalanceReqDto;
+import com.thanhbv.interbank.dto.*;
 import com.thanhbv.interbank.model.Card;
 import com.thanhbv.interbank.repository.CardRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +17,7 @@ import java.util.UUID;
 public class CardService {
     public static final String PAY = "pay";
     public static final String REFUND = "refund";
+
     private final CardRepository cardRepository;
 
     public Optional<Card> getCardByCardCode(String cardCode) {
@@ -36,43 +34,54 @@ public class CardService {
     }
 
     public ProcessTransactionResDto processTransaction(ProcessTransactionReqDto processTransactionReqDto) {
-        UUID appCode = UUID.fromString(processTransactionReqDto.getAppCode());
-        UUID secretCode = cardRepository.findBySecretCode(appCode).orElse(null);
-
+        Optional<Card> card = cardRepository.findById(processTransactionReqDto.getTransaction().getCardCode());
+        if (card.isEmpty()) {
+            return validCard(processTransactionReqDto);
+        }
         HashTransactionDto hashTransactionDto = HashTransactionDto.builder()
-                .secretKey(secretCode)
+                .secretKey(Code.SECRET_KEY)
                 .transactionDto(processTransactionReqDto.getTransaction())
                 .build();
-        if (!isEquals(processTransactionReqDto, hashTransactionDto)) {
+
+        processTransactionReqDto.getTransaction().setTransactionId(UUID.randomUUID().toString());
+        TransactionDto transactionDto = processTransactionReqDto.getTransaction();
+        if (!Objects.equals(processTransactionReqDto.getAppCode(), Code.APP_CODE) || !isEquals(processTransactionReqDto,
+                hashTransactionDto)) {
             return ProcessTransactionResDto.builder()
-                    .errorCode(4)
-                    .transaction(processTransactionReqDto.getTransaction())
+                    .errorCode(ErrorCode.SUSPECTED_FRAUD)
+                    .transaction(transactionDto)
                     .build();
         }
-        String command = processTransactionReqDto.getTransaction().getCommand();
-        Card card = cardRepository.findById(processTransactionReqDto.getTransaction().getCardCode()).orElse(null);
-        long amount = processTransactionReqDto.getTransaction().getAmount();
-        assert card != null;
+        String command = transactionDto.getCommand();
+        long amount = transactionDto.getAmount();
+        Card validCard = card.get();
         if (command.equals(PAY)) {
-            if (card.getBalance() >= amount) {
-                card.setBalance(card.getBalance() - amount);
-                cardRepository.save(card);
+            if (validCard.getBalance() >= amount) {
+                validCard.setBalance(validCard.getBalance() - amount);
+                cardRepository.save(validCard);
             } else return ProcessTransactionResDto.builder()
-                    .errorCode(2)
-                    .transaction(processTransactionReqDto.getTransaction())
+                    .errorCode(ErrorCode.NOT_ENOUGH_AMOUNT)
+                    .transaction(transactionDto)
                     .build();
         } else if (command.equals(REFUND)) {
-            card.setBalance(card.getBalance() + amount);
-            cardRepository.save(card);
+            validCard.setBalance(validCard.getBalance() + amount);
+            cardRepository.save(validCard);
         } else {
             return ProcessTransactionResDto.builder()
-                    .errorCode(5)
-                    .transaction(processTransactionReqDto.getTransaction())
+                    .errorCode(ErrorCode.MISSING_DATA)
+                    .transaction(transactionDto)
                     .build();
         }
         return ProcessTransactionResDto
                 .builder()
-                .errorCode(0)
+                .errorCode(ErrorCode.SUCCESS_CODE)
+                .transaction(transactionDto)
+                .build();
+    }
+
+    private static ProcessTransactionResDto validCard(ProcessTransactionReqDto processTransactionReqDto) {
+        return ProcessTransactionResDto.builder()
+                .errorCode(ErrorCode.INVALID_CARD)
                 .transaction(processTransactionReqDto.getTransaction())
                 .build();
     }
@@ -81,6 +90,4 @@ public class CardService {
         return DigestUtils.md5DigestAsHex(Objects.requireNonNull(SerializationUtils.serialize(hashTransactionDto.toString())))
                 .equals(processTransactionReqDto.getHashCode());
     }
-
-
 }

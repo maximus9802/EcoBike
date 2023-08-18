@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionDto {
+    private String transactionId;
     private String cardCode;
     private String owner;
     private String cvvCode;

@@ -32,10 +32,6 @@ public class CardController {
                 .build());
     }
 
-    @GetMapping("")
-    public ResponseEntity<GetBalanceResDto> getBalance2() {
-        return getBalance("1");
-    }
     @PutMapping("reset-balance")
     public ResponseEntity<ResetBalanceResDto> resetBalance(@RequestBody ResetBalanceReqDto resetBalanceReqDto) {
         Card card = cardService.resetBalance(resetBalanceReqDto);

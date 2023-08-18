@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class TransactionEntityMapper {
     public TransactionEntity modelToEntity(Transaction transaction) {
         return TransactionEntity.builder()
-                .id(transaction.getId())
+                .transactionId(transaction.getTransactionId())
                 .cardCode(transaction.getCardCode())
                 .owner(transaction.getOwner())
                 .cvvCode(transaction.getCvvCode())
@@ -19,12 +19,13 @@ public class TransactionEntityMapper {
                 .transactionContent(transaction.getTransactionContent())
                 .amount(transaction.getAmount())
                 .createdAt(transaction.getCreatedAt())
+                .errorCode(transaction.getErrorCode())
                 .build();
     }
 
     public Transaction entityToModel(TransactionEntity entity) {
         return Transaction.builder()
-                .id(entity.getId())
+                .transactionId(entity.getTransactionId())
                 .cardCode(entity.getCardCode())
                 .owner(entity.getOwner())
                 .cvvCode(entity.getCvvCode())
@@ -33,6 +34,7 @@ public class TransactionEntityMapper {
                 .transactionContent(entity.getTransactionContent())
                 .amount(entity.getAmount())
                 .createdAt(entity.getCreatedAt())
+                .errorCode(entity.getErrorCode())
                 .build();
     }
 }
