@@ -60,5 +60,10 @@ public class CardController {
                             .build());
         return ResponseEntity.ok(cardService.processTransaction(processTransactionReqDto));
     }
+
+    @PostMapping("check-card")
+    public Card checkCard(@RequestBody String cardCode) {
+        return cardService.getCardByCardCode(cardCode).orElse(null);
+    }
 }
 

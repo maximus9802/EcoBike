@@ -3,6 +3,7 @@ package com.quyvx.ecobike.api.controller.subsystem;
 import com.quyvx.ecobike.api.application.services.CardService;
 import com.quyvx.ecobike.api.application.services.TransactionService;
 import com.quyvx.ecobike.api.dto.card.*;
+import com.quyvx.ecobike.domain.aggregate_models.Card;
 import com.quyvx.ecobike.domain.aggregate_models.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,5 +53,12 @@ public class InterbankController {
     public ResponseEntity<GetBalanceResDto> getBalance(@PathVariable String cardCode) {
         return restTemplate.getForEntity("http://localhost:7777/api/card/get-balance/" + cardCode,
                 GetBalanceResDto.class);
+    }
+
+    @GetMapping("check-card/{cardCode}")
+    public ResponseEntity<Card> getCard(@PathVariable String cardCode) {
+        return restTemplate.postForEntity("http://localhost:7777/api/card/check-card",
+                new HttpEntity<>(cardCode),
+                Card.class);
     }
 }
