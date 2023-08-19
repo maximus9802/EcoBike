@@ -5,7 +5,7 @@ import axios from 'axios';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Card = () => {
+const CardRent = () => {
     // const { bikeId } = useParams(); 
     // const [cardInfo, setCardInfo] = useState({});
     const [cardHolderName, setCardHolderName] = useState("");
@@ -176,4 +176,4 @@ const Card = () => {
     );
 };
 
-export default Card;
+export default CardRent;
