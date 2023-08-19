@@ -6,11 +6,14 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+
+import java.util.UUID;
 @Getter
 @Setter
 @SuperBuilder
 @Slf4j
 @NoArgsConstructor
+
 public class Card {
     private String cardCode;
     private String cardHolderName;

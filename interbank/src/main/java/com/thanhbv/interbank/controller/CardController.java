@@ -65,5 +65,6 @@ public class CardController {
     public Card checkCard(@RequestBody String cardCode) {
         return cardService.getCardByCardCode(cardCode).orElse(null);
     }
+
 }
 
