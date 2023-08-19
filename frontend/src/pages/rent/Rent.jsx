@@ -1,43 +1,106 @@
-// import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { useParams } from 'react-router-dom'; // Make sure you have react-router-dom installed
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Rent = () => {
     // const { bikeId } = useParams(); 
+    const location = useLocation();
+    const [bike, setBike] = useState({});
+    const [transactionContent, setTransactionContent] = useState("");
+    const [balance, setBalance] = useState('');
+    // const [createdAt, setCreatedAt] = useState(null);
+    
     const navigate = useNavigate();
+    const id = 3;
 
-    // State to store rental details
-    // const [rentalDetails, setRentalDetails] = useState({
-    //     bikeId: bikeId,
-    //     rentDuration: 0,
-    // });
+    const getBikeInfo = () => {
+        const bikeInfoUrl = `http://localhost:6868/api/bikes/${id}`
+        axios.get(bikeInfoUrl).then((response) => {
+            setBike(response.data);
+        }).catch((error) => {
+            toast.error(error, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            console.error(error);
+        })
+    };
+
+    useEffect(() =>{
+        getBalance();
+        getBikeInfo();
+    },[]);
+
+    const handleProcessTransaction = async () => {
+        try {
+            if (transactionContent.trim() === "") {
+                toast.error('Transaction content cannot be empty!', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                return;
+            }
+            
+            if(balance < bike.deposit) {
+                toast.error('Not enough balance!', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                return;
+            }
+
+            const transactionDto = {
+                cardCode: location.state.cardCode ,
+                owner: location.state.cardHolderName,
+                cvvCode: location.state.cvvCode,
+                dateExpired: location.state.dateExpired,
+                command: "pay",
+                transactionContent,
+                amount: bike.deposit,
+                createdAt: new Date().toISOString().slice(0, 19),
+            };
+
+            await axios.put('http://localhost:6868/api/card/processTransaction', transactionDto);
+            toast.success('Successful transaction!', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            navigate("/");
+
+        } catch (error) {
+            toast.error(error, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            console.log(error);
+        }
+    };
+
+    const getBalance = async () => {
+        try {
+            const response = await axios.get(`http://localhost:6868/api/card/get-balance/${location.state.cardCode}`);
+            setBalance(response.data.balance);
+        } catch (error) {
+            toast.error(error, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            console.error(error);
+        }
+    };
 
     // Function to handle form submission
     const handleRent = (e) => {
         e.preventDefault();
-        console.log("Rented!");
     };
 
     const handleCancel = () => {
         navigate("/");
-    }
-
-    // Function to update rental details
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setRentalDetails({
-    //     ...rentalDetails,
-    //     [name]: value,
-    //     });
-    // };
-
-    // const handleConfirm = (e) => {
-    //     e.preventDefault();
-    //     console.log("Confirmed!");
-    // };
+        toast.error("Rent bike failed!", {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    };
 
     return (
         <div className="p-4">
+            <ToastContainer />
             <h1 className="text-center text-3xl">TRANSACTION INFORMATION</h1>
             <form onSubmit={handleRent} className="mt-4 ">
                 <div className="flex ">
@@ -47,15 +110,7 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Bike ID: </label>
                             {" "}
                             <div className="ml-4">
-                                123213
-                            </div>
-                        </div>
-
-                        <div className="m-4 flex ">
-                            <label className="block font-semibold mb-1">Bike Image: </label>
-                            {" "}
-                            <div className="ml-4">
-                                XYZ
+                                {bike.id}
                             </div>
                         </div>
 
@@ -63,7 +118,7 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">License plate: </label>
                             {" "}
                             <div className="ml-4">
-                                JP-202012
+                                {bike.licensePlate}
                             </div>
                         </div>
 
@@ -71,7 +126,7 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Bike Type: </label>
                             {" "}
                             <div className="ml-4">
-                                E-bike
+                                {bike.type}
                             </div>
                         </div>
 
@@ -79,7 +134,7 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Rental price: </label>
                             {" "}
                             <div className="ml-4">
-                                {new Intl.NumberFormat().format(20000)}
+                                {new Intl.NumberFormat().format(`${bike.price}`)}
                                 {" "}
                                 VND/hour
                             </div>
@@ -89,17 +144,9 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Deposit: </label>
                             {" "}
                             <div className="ml-4">
-                                {new Intl.NumberFormat().format(400000)}
+                                {new Intl.NumberFormat().format(`${bike.deposit}`)}
                                 {" "}
                                 VND
-                            </div>
-                        </div>
-
-                        <div className="m-4 flex ">
-                            <label className="block font-semibold mb-1">Status: </label>
-                            {" "}
-                            <div className="ml-4">
-                                Free
                             </div>
                         </div>
                     </div>
@@ -111,49 +158,63 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Card holder name: </label>
                             {" "}
                             <div className="ml-4">
-                                VU HONG QUANG
-                            </div>
-                        </div>
-
-                        <div className="m-4 flex">
-                            <label className="block font-semibold mb-1">Expired date: </label>
-                            {" "}
-                            <div className="ml-4">
-                                10/27
+                                {location.state.cardHolderName}
                             </div>
                         </div>
 
                         <div className="m-4 flex ">
-                            <label className="block font-semibold mb-1">Card number: </label>
+                            <label className="block font-semibold mb-1">Cvv code: </label>
                             {" "}
                             <div className="ml-4">
-                                1234 1232 4343 2133
+                                {location.state.cvvCode}
                             </div>
                         </div>
 
                         <div className="m-4 flex ">
-                            <label className="block font-semibold mb-1">Issuing bank: </label>
+                            <label className="block font-semibold mb-1">Card code: </label>
                             {" "}
                             <div className="ml-4">
-                                ViettinBank
+                                {location.state.cardCode}
                             </div>
                         </div>
 
                         <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Balance: </label>
                             {" "}
-                            <div className="ml-4">
-                                {new Intl.NumberFormat().format(9999999)}
-                            </div>
+                            {balance && 
+                                <div className="ml-4">
+                                    {new Intl.NumberFormat().format(balance)}
+                                </div>
+                            } 
                         </div>
+
+                        <div className="m-4 flex ">
+                            <label className="block font-semibold mb-1">Transaction content </label>
+                            {" "}
+                            <input
+                                type="text"
+                                className="border rounded px-2 py-2 w-4/5 mb-2"
+                                onChange={(e) => setTransactionContent(e.target.value)}
+                            />
+                        </div>
+
+
+
                     </div>
                 </div>
 
                 <div className="flex justify-center">
-                <button 
-                        type="submit" 
+                    <button 
+                        onClick={handleProcessTransaction}
                         className="bg-blue-500 text-white px-4 py-2 rounded m-2"
-                        // onClick= {handleRent}
+                    >
+                        Confirm
+                    </button>
+                    {" "}
+                    <button 
+                        type="submit" 
+                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 hidden"
+                        onClick= {handleRent}
                     >
                         Confirm
                     </button>

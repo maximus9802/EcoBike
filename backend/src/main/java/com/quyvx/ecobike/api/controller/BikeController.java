@@ -65,7 +65,7 @@ public class BikeController {
     }
 
     @PutMapping("rent_bike/{id}")
-    public BikeDetails rentBike(@PathVariable long id, @RequestBody long typeTrackerId) {
+    public BikeDetails rentBike(@PathVariable Long id, @RequestBody Long typeTrackerId) {
         BikeDetails bike =  bikeQueries.getBikeDetailsById(id);
         bike.getBikeTracker().setStatus("active");
         bike.getBikeTracker().setTypeTrackerId(typeTrackerId);
