@@ -4,9 +4,8 @@ const DockItem = (props) => {
     const handleClick = () => {
         console.log("click")
     }
-    const { item } = props.item;
-    console.log(item)
-    console.log(props.item)
+    // console.log(item)
+    // console.log(props.item)
     return(
         <div className='font-semibold p-2 bg-yellow-300 hover:bg-yellow-100 hover:cursor-pointer' onClick={handleClick}>
             <div>{props.item.name}</div>

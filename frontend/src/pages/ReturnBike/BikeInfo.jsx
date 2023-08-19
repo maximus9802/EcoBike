@@ -5,7 +5,7 @@ const BikeInfo = () => {
     const id = 1;
     const [bike, setBike] = useState({});
     useEffect(() =>{
-        const bikeInfoUrl = `http://localhost:6868/api/bikes/${id}`
+        const bikeInfoUrl = `http://localhost:6868/api/bikes/3`
         const bikeTrackerUrl = `http://localhost:6868/api/tracker/${id}`
         axios.get(bikeInfoUrl).then((response) => {
             setBike(response.data);
@@ -13,7 +13,7 @@ const BikeInfo = () => {
             console.error(error);
         })
         axios.get(bikeTrackerUrl).then((response) => {
-            console.log(response);
+            console.log("res2:",response);
         })
     }, [])
 
