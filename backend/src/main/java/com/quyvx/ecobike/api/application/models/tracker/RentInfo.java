@@ -14,6 +14,5 @@ public class RentInfo {
 
     private String typeRent;
 
-    private Long cast;
-
+    private Long cash;
 }

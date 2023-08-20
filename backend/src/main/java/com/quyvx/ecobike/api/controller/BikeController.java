@@ -5,7 +5,6 @@ import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
 import com.quyvx.ecobike.api.application.models.TypeTrackerIdRequest;
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
 import com.quyvx.ecobike.api.application.queries.bike.BikeQueries;
-import com.quyvx.ecobike.api.application.queries.biketracker.BikeTrackerQueries;
 import com.quyvx.ecobike.api.application.services.BikeService;
 import com.quyvx.ecobike.api.application.services.TrackerService;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeReqDto;
@@ -31,7 +30,6 @@ public class BikeController {
     private final BikeService bikeService;
     private final TrackerService trackerService;
     private final BikeQueries bikeQueries;
-    private final BikeTrackerQueries bikeTrackerQueries;
 
     @PostMapping("")
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){
@@ -80,5 +78,14 @@ public class BikeController {
     @GetMapping("get-bike/{id}")
     public Bike getBikeById(@PathVariable long id) {
         return bikeQueries.getBikeById(id);
+    }
+
+    @PutMapping("return_bike/{bikeId}")
+    public BikeTracker returnBike(@PathVariable long bikeId) {
+        if (bikeService.checkBikeRented(bikeId)){
+            bikeService.returnBike(bikeId);
+            return trackerService.returnBike(bikeId);
+        }
+        else return null;
     }
 }

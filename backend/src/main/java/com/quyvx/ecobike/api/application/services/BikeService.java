@@ -20,9 +20,18 @@ public class BikeService {
         return Objects.equals(bikeQueries.findStatusBikeById(id), "free");
     }
 
+    public boolean checkBikeRented(Long id){
+        return Objects.equals(bikeQueries.findStatusBikeById(id), "rented");
+    }
     public Bike rentBike(long bikeId) {
         Bike bike = bikeQueries.getBikeById(bikeId);
         bike.setStatusId(Bike.RENTED_STATUS);
+        return bikeRepository.save(bike);
+    }
+
+    public Bike returnBike(long bikeId) {
+        Bike bike = bikeQueries.getBikeById(bikeId);
+        bike.setStatusId(Bike.FREE_STATUS);
         return bikeRepository.save(bike);
     }
 }
