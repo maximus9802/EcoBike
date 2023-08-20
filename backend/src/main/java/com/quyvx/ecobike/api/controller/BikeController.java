@@ -2,9 +2,12 @@ package com.quyvx.ecobike.api.controller;
 
 import an.awesome.pipelinr.Pipeline;
 import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
+import com.quyvx.ecobike.api.application.models.TypeTrackerIdRequest;
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
 import com.quyvx.ecobike.api.application.queries.bike.BikeQueries;
+import com.quyvx.ecobike.api.application.queries.biketracker.BikeTrackerQueries;
 import com.quyvx.ecobike.api.application.services.BikeService;
+import com.quyvx.ecobike.api.application.services.TrackerService;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeReqDto;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeResDto;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
@@ -26,11 +29,12 @@ import static com.quyvx.ecobike.domain.aggregate_models.TypeTracker.MINUTE_TRACK
 public class BikeController {
     private final Pipeline pipeline;
     private final BikeService bikeService;
+    private final TrackerService trackerService;
     private final BikeQueries bikeQueries;
+    private final BikeTrackerQueries bikeTrackerQueries;
 
     @PostMapping("")
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){
-
         CreateBikeCommand command = CreateBikeCommand.builder()
                 .typeName(request.getTypeName())
                 .linkImage(request.getLinkImage())
@@ -74,5 +78,8 @@ public class BikeController {
         return bike;
     }
 
-
+    @GetMapping("get-bike/{id}")
+    public Bike getBikeById(@PathVariable long id) {
+        return bikeQueries.getBikeById(id);
+    }
 }
