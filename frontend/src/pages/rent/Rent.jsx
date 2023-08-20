@@ -130,6 +130,18 @@ const Rent = () => {
                             </div>
                         </div>
 
+                        {bike.battery && 
+                            <div className="m-4 flex ">
+                                <label className="block font-semibold mb-1">Battery: </label>
+                                {" "}
+                                <div className="ml-4">
+                                    {bike.battery}
+                                    {" "}
+                                    %
+                                </div>
+                            </div>
+                        }
+
                         <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Rental price: </label>
                             {" "}
@@ -214,14 +226,14 @@ const Rent = () => {
                 <div className="flex justify-center">
                     <button 
                         onClick={handleProcessTransaction}
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2"
                     >
                         Confirm
                     </button>
                     {" "}
                     <button 
                         type="submit" 
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 hidden"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 hidden"
                         onClick= {handleRent}
                     >
                         Confirm
@@ -229,7 +241,7 @@ const Rent = () => {
                     {"  "}
                     <button 
                         type="submit" 
-                        className="bg-red-500 text-white px-4 py-2 rounded m-2"
+                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full m-2"
                         onClick= {handleCancel}
                     >
                         Cancel

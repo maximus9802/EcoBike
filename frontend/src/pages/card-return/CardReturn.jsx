@@ -147,7 +147,7 @@ const CardReturn = () => {
 
                 <div className="flex justify-center m-4">
                     <button 
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 confirm-button-success"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 confirm-button-success"
                         onClick= {checkCard}
                     >
                         Check
@@ -157,7 +157,7 @@ const CardReturn = () => {
                 <div className="flex justify-center m-4">
                     <button 
                         type="submit" 
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 hidden confirm-button"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 confirm-button-success"
                         onClick= {handleConfirm}
                     >
                         Choose
@@ -165,7 +165,7 @@ const CardReturn = () => {
                     {"  "}
                     <button 
                         type="submit" 
-                        className="bg-red-500 text-white px-4 py-2 rounded m-2 hidden cancel-button"
+                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full m-2 hidden cancel-button"
                         onClick= {handleCancel}
                     >
                         Cancel
