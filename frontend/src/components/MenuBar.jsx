@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const MenuBar = () => {
   return (
     <nav className="bg-blue-400 p-4 flex justify-between items-center">
-      <Link to="/" className="text-white text-xl font-semibold">EcoBikeRental</Link>
+      <Link to="/" className="pl-4 text-white text-xl font-semibold">EcoBikeRental</Link>
       <div className="flex">
         <input
           type="text"
