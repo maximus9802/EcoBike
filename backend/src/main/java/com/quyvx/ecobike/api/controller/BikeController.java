@@ -25,7 +25,7 @@ import static com.quyvx.ecobike.domain.aggregate_models.TypeTracker.MINUTE_TRACK
 @AllArgsConstructor
 @RequestMapping("/api/bikes")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173"})
 public class BikeController {
     private final Pipeline pipeline;
     private final BikeService bikeService;
@@ -68,14 +68,13 @@ public class BikeController {
         return bikeQueries.getAllBikeDetails();
     }
 
-    @PutMapping("rent_bike/{id}")
-
-    public BikeDetails rentBike(@PathVariable long id, @RequestBody long typeTrackerId) {
-        BikeDetails bike =  bikeQueries.getBikeDetailsById(id);
-        bike.getBikeTracker().setStatus("active");
-        bike.getBikeTracker().setTypeTrackerId(typeTrackerId);
-        bike.getBikeTracker().setStart(LocalDateTime.now());
-        return bike;
+    @PutMapping("rent_bike/{bikeId}")
+    public BikeTracker rentBike(@PathVariable long bikeId, @RequestBody TypeTrackerIdRequest request) {
+        if (bikeService.checkBikeFree(bikeId)){
+            bikeService.rentBike(bikeId);
+            return trackerService.rentBike(request.getTypeTrackerId(), bikeId);
+        }
+        else return null;
     }
 
     @GetMapping("get-bike/{id}")
