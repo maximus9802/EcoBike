@@ -26,6 +26,7 @@ import static com.quyvx.ecobike.domain.aggregate_models.TypeTracker.MINUTE_TRACK
 @RequestMapping("/api/bikes")
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173"})
+
 public class BikeController {
     private final Pipeline pipeline;
     private final BikeService bikeService;
@@ -80,5 +81,14 @@ public class BikeController {
     @GetMapping("get-bike/{id}")
     public Bike getBikeById(@PathVariable long id) {
         return bikeQueries.getBikeById(id);
+    }
+
+    @PutMapping("return_bike/{bikeId}")
+    public BikeTracker returnBike(@PathVariable long bikeId) {
+        if (bikeService.checkBikeRented(bikeId)){
+            bikeService.returnBike(bikeId);
+            return trackerService.returnBike(bikeId);
+        }
+        else return null;
     }
 }

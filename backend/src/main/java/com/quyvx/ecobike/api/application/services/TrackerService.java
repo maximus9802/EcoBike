@@ -25,7 +25,7 @@ public class TrackerService {
     public RentInfo viewRentInfoToNow(Long bikeId){
         BikeTracker bikeTracker =
                 bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId).getId())
-                        .orElse(null);
+                .orElse(null);
         if (bikeTracker != null) {
             long duration = calculateDuration(bikeTracker.getStart(), LocalDateTime.now());
             String typeRent = typeTrackerQueriesService.findTypeNameByTypeId(bikeTracker.getTypeTrackerId());
@@ -33,7 +33,7 @@ public class TrackerService {
                     .typeRent(typeRent)
                     .startTime(bikeTracker.getStart())
                     .duration(duration)
-                    .cast(calculateCash(duration, typeRent))
+                    .cash(calculateCash(duration, typeRent))
                     .build();
         } else return null;
     }
@@ -67,6 +67,13 @@ public class TrackerService {
         saveTracker.setStart(LocalDateTime.now());
         saveTracker.setStatus(BikeTracker.ACTIVE_STATUS);
         saveTracker.setTypeTrackerId(typeTrackerId);
+        return bikeTrackerRepository.save(saveTracker);
+    }
+
+    public BikeTracker returnBike(long bikeId) {
+        BikeTracker saveTracker = bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId);
+        saveTracker.setEnd(LocalDateTime.now());
+        saveTracker.setStatus(BikeTracker.INACTIVE_STATUS);
         return bikeTrackerRepository.save(saveTracker);
     }
 }
