@@ -157,7 +157,7 @@ const CardReturn = () => {
                 <div className="flex justify-center m-4">
                     <button 
                         type="submit" 
-                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 confirm-button-success"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 hidden confirm-button"
                         onClick= {handleConfirm}
                     >
                         Choose

@@ -5,6 +5,7 @@ import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
 import com.quyvx.ecobike.api.application.models.TypeTrackerIdRequest;
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
 import com.quyvx.ecobike.api.application.queries.bike.BikeQueries;
+import com.quyvx.ecobike.api.application.queries.biketracker.BikeTrackerQueries;
 import com.quyvx.ecobike.api.application.services.BikeService;
 import com.quyvx.ecobike.api.application.services.TrackerService;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeReqDto;
@@ -24,12 +25,14 @@ import static com.quyvx.ecobike.domain.aggregate_models.TypeTracker.MINUTE_TRACK
 @AllArgsConstructor
 @RequestMapping("/api/bikes")
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173"})
+
 public class BikeController {
     private final Pipeline pipeline;
     private final BikeService bikeService;
     private final TrackerService trackerService;
     private final BikeQueries bikeQueries;
+    private final BikeTrackerQueries bikeTrackerQueries;
 
     @PostMapping("")
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){

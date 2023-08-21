@@ -20,7 +20,7 @@ const TransactionReturn = () => {
 
 
     const getBikeInfo = () => {
-        const bikeInfoUrl = `http://localhost:6868/api/bikes/${id}`
+        const bikeInfoUrl = `http://localhost:6868/api/bikes/get-bike/${id}`
         axios.get(bikeInfoUrl).then((response) => {
             setBike(response.data);
         }).catch((error) => {
@@ -139,13 +139,13 @@ const TransactionReturn = () => {
                             </div>
                         </div>
 
-                        <div className="m-4 flex ">
+                        {/* <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Bike Type: </label>
                             {" "}
                             <div className="ml-4">
                                 {bike.type}
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Rental price: </label>
@@ -240,23 +240,20 @@ const TransactionReturn = () => {
                                 onChange={(e) => setTransactionContent(e.target.value)}
                             />
                         </div>
-
-
-
                     </div>
                 </div>
 
                 <div className="flex justify-center">
                     <button 
                         onClick={handleProcessTransaction}
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2"
                     >
                         Confirm
                     </button>
                     {" "}
                     <button 
                         type="submit" 
-                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 hidden"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 hidden"
                         onClick= {handleRent}
                     >
                         Confirm
@@ -264,7 +261,7 @@ const TransactionReturn = () => {
                     {"  "}
                     <button 
                         type="submit" 
-                        className="bg-red-500 text-white px-4 py-2 rounded m-2"
+                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full m-2"
                         onClick= {handleCancel}
                     >
                         Cancel

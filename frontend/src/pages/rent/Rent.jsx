@@ -9,15 +9,15 @@ const Rent = () => {
     // const { bikeId } = useParams(); 
     const location = useLocation();
     const [bike, setBike] = useState({});
+    const [typeTracker, setTypeTracker] = useState('');
     const [transactionContent, setTransactionContent] = useState("");
     const [balance, setBalance] = useState('');
-    // const [createdAt, setCreatedAt] = useState(null);
     
     const navigate = useNavigate();
     const id = 3;
 
     const getBikeInfo = () => {
-        const bikeInfoUrl = `http://localhost:6868/api/bikes/${id}`
+        const bikeInfoUrl = `http://localhost:6868/api/bikes/get-bike/${id}`
         axios.get(bikeInfoUrl).then((response) => {
             setBike(response.data);
         }).catch((error) => {
@@ -33,8 +33,17 @@ const Rent = () => {
         getBikeInfo();
     },[]);
 
+    const typeTrackerId = ['Minute', 'Hour', 'Day'];
+
     const handleProcessTransaction = async () => {
         try {
+            if (!typeTrackerId.includes(typeTracker)){
+                toast.error('Type tracker cannot be empty!', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                return;
+            }
+
             if (transactionContent.trim() === "") {
                 toast.error('Transaction content cannot be empty!', {
                     position: toast.POSITION.TOP_RIGHT
@@ -60,10 +69,12 @@ const Rent = () => {
                 createdAt: new Date().toISOString().slice(0, 19),
             };
 
-            await axios.put('http://localhost:6868/api/card/processTransaction', transactionDto);
-            toast.success('Successful transaction!', {
-                position: toast.POSITION.TOP_RIGHT
+            await axios.put(`http://localhost:6868/api/bikes/rent_bike/${bike.id}`, {
+                typeTrackerId: typeTrackerId.indexOf(typeTracker) + 1,
             });
+
+            await axios.put('http://localhost:6868/api/card/processTransaction', transactionDto);
+            
             navigate("/");
             alert("Successful transaction!");
         } catch (error) {
@@ -122,13 +133,13 @@ const Rent = () => {
                             </div>
                         </div>
 
-                        <div className="m-4 flex ">
+                        {/* <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Bike Type: </label>
                             {" "}
                             <div className="ml-4">
                                 {bike.type}
                             </div>
-                        </div>
+                        </div> */}
 
                         {bike.battery && 
                             <div className="m-4 flex ">
@@ -208,17 +219,30 @@ const Rent = () => {
                             </div>
                         </div>
 
+                        <div className="m-4 flex">
+                            <label className="block font-semibold mb-1">Type tracker</label>{" "}
+                            <select
+                                value={typeTracker}
+                                onChange={(e) => setTypeTracker(e.target.value)}
+                                className="border rounded px-2 py-2 w-4/5 mb-2"
+                            >
+                                <option disabled value="">Select type</option>
+                                <option value="Minute">Minute</option>
+                                <option value="Hour">Hour</option>
+                                <option value="Day">Day</option>
+                            </select>
+                        </div>
+
                         <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Transaction content </label>
                             {" "}
                             <input
                                 type="text"
+                                placeholder='Content...'
                                 className="border rounded px-2 py-2 w-4/5 mb-2"
                                 onChange={(e) => setTransactionContent(e.target.value)}
                             />
                         </div>
-
-
 
                     </div>
                 </div>

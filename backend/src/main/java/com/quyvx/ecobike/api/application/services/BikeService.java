@@ -23,6 +23,7 @@ public class BikeService {
     public boolean checkBikeRented(Long id){
         return Objects.equals(bikeQueries.findStatusBikeById(id), "rented");
     }
+
     public Bike rentBike(long bikeId) {
         Bike bike = bikeQueries.getBikeById(bikeId);
         bike.setStatusId(Bike.RENTED_STATUS);
