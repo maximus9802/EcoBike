@@ -10,4 +10,6 @@ public interface IBikeTrackerRepository {
     void delete(Long id);
 
     Optional<BikeTracker> findById(Long id);
+
+    BikeTracker findByBikeId(long bikeId);
 }

@@ -14,7 +14,7 @@ public class TrackerController {
 
     @GetMapping("{id}")
     public RentInfo getRentInfo(@PathVariable("id") Long bikeId){
-        if (trackerService.viewRentInfoToNow(bikeId).getCast() < 0)
+        if (trackerService.viewRentInfoToNow(bikeId).getCash() < 0)
             return trackerService.viewRentInfoToNow(bikeId);
         return null;
     }

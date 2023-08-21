@@ -2,9 +2,11 @@ package com.quyvx.ecobike.api.controller;
 
 import an.awesome.pipelinr.Pipeline;
 import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
+import com.quyvx.ecobike.api.application.models.TypeTrackerIdRequest;
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
 import com.quyvx.ecobike.api.application.queries.bike.BikeQueries;
 import com.quyvx.ecobike.api.application.services.BikeService;
+import com.quyvx.ecobike.api.application.services.TrackerService;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeReqDto;
 import com.quyvx.ecobike.api.dto.bike.CreateBikeResDto;
 import com.quyvx.ecobike.domain.aggregate_models.Bike;
@@ -22,15 +24,15 @@ import static com.quyvx.ecobike.domain.aggregate_models.TypeTracker.MINUTE_TRACK
 @AllArgsConstructor
 @RequestMapping("/api/bikes")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 public class BikeController {
     private final Pipeline pipeline;
     private final BikeService bikeService;
+    private final TrackerService trackerService;
     private final BikeQueries bikeQueries;
 
     @PostMapping("")
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){
-
         CreateBikeCommand command = CreateBikeCommand.builder()
                 .typeName(request.getTypeName())
                 .linkImage(request.getLinkImage())
@@ -64,15 +66,26 @@ public class BikeController {
         return bikeQueries.getAllBikeDetails();
     }
 
-    @PutMapping("rent_bike/{id}")
-
-    public BikeDetails rentBike(@PathVariable long id, @RequestBody long typeTrackerId) {
-        BikeDetails bike =  bikeQueries.getBikeDetailsById(id);
-        bike.getBikeTracker().setStatus("active");
-        bike.getBikeTracker().setTypeTrackerId(typeTrackerId);
-        bike.getBikeTracker().setStart(LocalDateTime.now());
-        return bike;
+    @PutMapping("rent_bike/{bikeId}")
+    public BikeTracker rentBike(@PathVariable long bikeId, @RequestBody TypeTrackerIdRequest request) {
+        if (bikeService.checkBikeFree(bikeId)){
+            bikeService.rentBike(bikeId);
+            return trackerService.rentBike(request.getTypeTrackerId(), bikeId);
+        }
+        else return null;
     }
 
+    @GetMapping("get-bike/{id}")
+    public Bike getBikeById(@PathVariable long id) {
+        return bikeQueries.getBikeById(id);
+    }
 
+    @PutMapping("return_bike/{bikeId}")
+    public BikeTracker returnBike(@PathVariable long bikeId) {
+        if (bikeService.checkBikeRented(bikeId)){
+            bikeService.returnBike(bikeId);
+            return trackerService.returnBike(bikeId);
+        }
+        else return null;
+    }
 }

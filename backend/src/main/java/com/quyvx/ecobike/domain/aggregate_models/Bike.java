@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 @SuperBuilder
 @Slf4j
 public class Bike {
+    public static final long FREE_STATUS = 1L;
+    public static final long RENTED_STATUS = 2L;
+
     private Long id;
 
     private String description;

@@ -23,7 +23,8 @@ public class TrackerService {
     private final BikeTrackerRepository bikeTrackerRepository;
     private final ITypeTrackerQueriesService typeTrackerQueriesService;
     public RentInfo viewRentInfoToNow(Long bikeId){
-        BikeTracker bikeTracker = bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId))
+        BikeTracker bikeTracker =
+                bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId).getId())
                 .orElse(null);
         if (bikeTracker != null) {
             long duration = calculateDuration(bikeTracker.getStart(), LocalDateTime.now());
@@ -32,7 +33,7 @@ public class TrackerService {
                     .typeRent(typeRent)
                     .startTime(bikeTracker.getStart())
                     .duration(duration)
-                    .cast(calculateCash(duration, typeRent))
+                    .cash(calculateCash(duration, typeRent))
                     .build();
         } else return null;
     }
@@ -58,5 +59,21 @@ public class TrackerService {
             return EBIKE_AND_TWIN_FACTOR;
         }
         return INVALID_TYPE_BIKE;
+    }
+
+
+    public BikeTracker rentBike(long typeTrackerId, long bikeId) {
+        BikeTracker saveTracker = bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId);
+        saveTracker.setStart(LocalDateTime.now());
+        saveTracker.setStatus(BikeTracker.ACTIVE_STATUS);
+        saveTracker.setTypeTrackerId(typeTrackerId);
+        return bikeTrackerRepository.save(saveTracker);
+    }
+
+    public BikeTracker returnBike(long bikeId) {
+        BikeTracker saveTracker = bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId);
+        saveTracker.setEnd(LocalDateTime.now());
+        saveTracker.setStatus(BikeTracker.INACTIVE_STATUS);
+        return bikeTrackerRepository.save(saveTracker);
     }
 }
