@@ -5,16 +5,19 @@ import axios from 'axios';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Rent = () => {
+const TransactionReturn = () => {
     // const { bikeId } = useParams(); 
     const location = useLocation();
     const [bike, setBike] = useState({});
+    const [rent, setRent] = useState({});
     const [transactionContent, setTransactionContent] = useState("");
     const [balance, setBalance] = useState('');
     // const [createdAt, setCreatedAt] = useState(null);
     
     const navigate = useNavigate();
     const id = 3;
+    const trackerId = 1;
+
 
     const getBikeInfo = () => {
         const bikeInfoUrl = `http://localhost:6868/api/bikes/${id}`
@@ -28,50 +31,15 @@ const Rent = () => {
         })
     };
 
-    useEffect(() =>{
-        getBalance();
-        getBikeInfo();
-    },[]);
-
-    const handleProcessTransaction = async () => {
-        try {
-            if (transactionContent.trim() === "") {
-                toast.error('Transaction content cannot be empty!', {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-                return;
-            }
-            
-            if(balance < bike.deposit) {
-                toast.error('Not enough balance!', {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-                return;
-            }
-
-            const transactionDto = {
-                cardCode: location.state.cardCode ,
-                owner: location.state.cardHolderName,
-                cvvCode: location.state.cvvCode,
-                dateExpired: location.state.dateExpired,
-                command: "pay",
-                transactionContent,
-                amount: bike.deposit,
-                createdAt: new Date().toISOString().slice(0, 19),
-            };
-
-            await axios.put('http://localhost:6868/api/card/processTransaction', transactionDto);
-            toast.success('Successful transaction!', {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            navigate("/");
-            alert("Successful transaction!");
-        } catch (error) {
+    const getRentInfo = () => {
+        axios.get(`http://localhost:6868/api/tracker/${trackerId}`).then((response) => {
+            setRent(response.data);
+        }).catch((error) => {
             toast.error(error, {
                 position: toast.POSITION.TOP_RIGHT
             });
-            console.log(error);
-        }
+            console.error(error);
+        })
     };
 
     const getBalance = async () => {
@@ -85,6 +53,55 @@ const Rent = () => {
             console.error(error);
         }
     };
+    
+    useEffect(() =>{
+        getBalance();
+        getBikeInfo();
+        getRentInfo();
+    },[]);
+
+    const handleProcessTransaction = async () => {
+        try {
+            if (transactionContent.trim() === "") {
+                toast.error('Transaction content cannot be empty!', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                return;
+            }
+            
+            if(balance < bike.deposit - rent.cast) {
+                toast.error('Not enough balance!', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                return;
+            }
+
+            const transactionDto = {
+                cardCode: location.state.cardCode ,
+                owner: location.state.cardHolderName,
+                cvvCode: location.state.cvvCode,
+                dateExpired: location.state.dateExpired,
+                command: "refund",
+                transactionContent,
+                amount: bike.deposit - rent.cast,
+                createdAt: new Date().toISOString().slice(0, 19),
+            };
+
+            await axios.put('http://localhost:6868/api/card/processTransaction', transactionDto);
+            toast.success('Successful transaction!', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            navigate("/");
+            alert("Successful transaction!");
+
+        } catch (error) {
+            toast.error(error, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            console.log(error);
+        }
+    };
+
 
     // Function to handle form submission
     const handleRent = (e) => {
@@ -130,18 +147,6 @@ const Rent = () => {
                             </div>
                         </div>
 
-                        {bike.battery && 
-                            <div className="m-4 flex ">
-                                <label className="block font-semibold mb-1">Battery: </label>
-                                {" "}
-                                <div className="ml-4">
-                                    {bike.battery}
-                                    {" "}
-                                    %
-                                </div>
-                            </div>
-                        }
-
                         <div className="m-4 flex ">
                             <label className="block font-semibold mb-1">Rental price: </label>
                             {" "}
@@ -157,6 +162,24 @@ const Rent = () => {
                             {" "}
                             <div className="ml-4">
                                 {new Intl.NumberFormat().format(`${bike.deposit}`)}
+                                {" "}
+                                VND
+                            </div>
+                        </div>
+
+                        <div className="m-4 flex ">
+                            <label className="block font-semibold mb-1">Duration rent: </label>
+                            {" "}
+                            <div className="ml-4">
+                                {new Intl.NumberFormat().format(`${rent.duration}`)} min
+                            </div>
+                        </div>
+
+                        <div className="m-4 flex ">
+                            <label className="block font-semibold mb-1">Cast: </label>
+                            {" "}
+                            <div className="ml-4">
+                                {new Intl.NumberFormat().format(`${rent.cast}`)}
                                 {" "}
                                 VND
                             </div>
@@ -204,7 +227,7 @@ const Rent = () => {
                             <label className="block font-semibold mb-1">Amount: </label>
                             {" "}
                             <div className="ml-4">
-                            {new Intl.NumberFormat().format(`${bike.deposit}`)}
+                            {new Intl.NumberFormat().format(`${bike.deposit - rent.cast}`)}
                             </div>
                         </div>
 
@@ -226,14 +249,14 @@ const Rent = () => {
                 <div className="flex justify-center">
                     <button 
                         onClick={handleProcessTransaction}
-                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2"
+                        className="bg-blue-500 text-white px-4 py-2 rounded m-2"
                     >
                         Confirm
                     </button>
                     {" "}
                     <button 
                         type="submit" 
-                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-full m-2 hidden"
+                        className="bg-blue-500 text-white px-4 py-2 rounded m-2 hidden"
                         onClick= {handleRent}
                     >
                         Confirm
@@ -241,7 +264,7 @@ const Rent = () => {
                     {"  "}
                     <button 
                         type="submit" 
-                        className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full m-2"
+                        className="bg-red-500 text-white px-4 py-2 rounded m-2"
                         onClick= {handleCancel}
                     >
                         Cancel
@@ -253,4 +276,4 @@ const Rent = () => {
     );
 };
 
-export default Rent;
+export default TransactionReturn;

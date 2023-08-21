@@ -3,10 +3,12 @@ import route from "../constants/route";
 import DefaultLayout from "../components/DefaultLayout";
 import Home from "../pages/home/Home";
 import ReturnBikePage from "../pages/ReturnBike/ReturnBikePage";
-import RENT from "../pages/rent/Rent";
-import CARD from "../pages/card/Card";
+import Rent from "../pages/rent/Rent";
+import CardRent from "../pages/card-rent/CardRent";
 import DockingPoint from "../pages/dockingpoint/DockingPoint";
 import Dock from "../pages/dock/Dock";
+import CardReturn from "../pages/card-return/CardReturn";
+import TransactionReturn from "../pages/transaction-return/TransactionReturn";
 
 const router = createBrowserRouter([
     {
@@ -30,12 +32,20 @@ const router = createBrowserRouter([
                 element: <ReturnBikePage/>,
             },
             {
-                path: route.RENT,
-                element: <RENT />,
+                path: route.CARD_RETURN,
+                element: <CardReturn />,
             },
             {
-                path: route.CARD,
-                element: <CARD />,
+                path: route.TRANSACTION_RETURN,
+                element: <TransactionReturn />,
+            },
+            {
+                path: route.RENT,
+                element: <Rent />,
+            },
+            {
+                path: route.CARD_RENT,
+                element: <CardRent />,
             },
         ],
     },

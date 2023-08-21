@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @Slf4j
 public class BikeTracker {
+    public static final String ACTIVE_STATUS = "Active";
+    public static final String INACTIVE_STATUS = "Inactive";
     private Long id;
 
     private LocalDateTime start;

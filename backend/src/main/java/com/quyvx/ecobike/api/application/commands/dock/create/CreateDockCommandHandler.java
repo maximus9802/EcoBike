@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class CreateDockCommandHandler implements Command.Handler<CreateDockCommand, Dock> {
-
     private final IDockRepository dockRepository;
 
     @Override

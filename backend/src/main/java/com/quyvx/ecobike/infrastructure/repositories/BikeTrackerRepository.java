@@ -31,4 +31,10 @@ public class BikeTrackerRepository implements IBikeTrackerRepository {
     public Optional<BikeTracker> findById(Long id) {
         return bikeTrackerJpaRepository.findById(id).map(mapper::entityToModel);
     }
+
+    @Override
+    public BikeTracker findByBikeId(long bikeId) {
+        BikeTrackerEntity entity = bikeTrackerJpaRepository.findTrackerIdByBikeId(bikeId);
+        return mapper.entityToModel(entity);
+    }
 }
