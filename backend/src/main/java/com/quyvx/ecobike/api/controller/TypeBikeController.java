@@ -1,11 +1,11 @@
 package com.quyvx.ecobike.api.controller;
 
+import com.quyvx.ecobike.api.application.queries.typebike.ITypeBikeQueriesService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class TypeBikeController {
+    private final ITypeBikeQueriesService typeBikeQueriesService;
 
-    @PostMapping()
-    public void createNewTypeBike(){}
+    @GetMapping("")
+    public List<String> getAllTypeBike(){
+        return typeBikeQueriesService.findAllType();
+    }
 }

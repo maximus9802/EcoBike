@@ -22,6 +22,7 @@ public class DockEntity {
 
     private String name;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dock")

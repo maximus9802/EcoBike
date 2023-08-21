@@ -20,6 +20,7 @@ public class BikeEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     private BigDecimal price;

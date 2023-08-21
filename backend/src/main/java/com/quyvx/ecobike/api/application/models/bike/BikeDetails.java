@@ -17,5 +17,6 @@ public interface BikeDetails {
     String getCode();
     String getLicensePlate();
     BigDecimal getDeposit();
+    Long getDockId();
     BikeTracker getBikeTracker();
 }
