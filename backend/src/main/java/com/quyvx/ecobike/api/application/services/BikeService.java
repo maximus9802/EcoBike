@@ -29,9 +29,10 @@ public class BikeService {
         return bikeRepository.save(bike);
     }
 
-    public Bike returnBike(long bikeId) {
+    public Bike returnBike(long bikeId, long dockId) {
         Bike bike = bikeQueries.getBikeById(bikeId);
         bike.setStatusId(Bike.FREE_STATUS);
+        bike.setDockId(dockId);
         return bikeRepository.save(bike);
     }
 }
