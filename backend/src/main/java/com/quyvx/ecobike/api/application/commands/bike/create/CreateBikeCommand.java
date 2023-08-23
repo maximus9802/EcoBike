@@ -19,4 +19,5 @@ public class CreateBikeCommand implements Command<Bike>{
     private String licensePlate;
     private BigDecimal deposit;
     private BikeTracker bikeTracker;
+    private Long dockId;
 }

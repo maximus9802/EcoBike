@@ -36,7 +36,7 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())
                     .battery(command.getBattery())
-                    .dockId(1L)
+                    .dockId(command.getDockId())
                     .licensePlate(command.getLicensePlate())
                     .deposit(command.getDeposit())
                     .build();
@@ -58,7 +58,7 @@ public class CreateBikeCommandHandler implements Command.Handler<CreateBikeComma
                     .description(command.getDescription())
                     .linkImage(command.getLinkImage())
                     .battery(command.getBattery())
-                    .dockId(1L)
+                    .dockId(command.getDockId())
                     .licensePlate(command.getLicensePlate())
                     .deposit(command.getDeposit())
                     .build();

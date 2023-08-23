@@ -13,4 +13,5 @@ public class CreateBikeReqDto {
     private Long battery;
     private String licensePlate;
     private BigDecimal deposit;
+    private Long dockId;
 }

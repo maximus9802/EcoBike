@@ -44,6 +44,7 @@ public class BikeController {
                 .deposit(request.getDeposit())
                 .description(request.getDescription())
                 .battery(request.getBattery())
+                .dockId(request.getDockId())
                 .build();
         Bike savedBike = pipeline.send(command);
         long id = savedBike.getId();
@@ -55,7 +56,7 @@ public class BikeController {
                 .status("stop")
                 .build();
         savedBike.setBikeTracker(bikeTracker);
-        return CreateBikeResDto.builder().id(savedBike.getId()).build();
+        return CreateBikeResDto.builder().id(id).build();
     }
 
     @GetMapping("{id}")

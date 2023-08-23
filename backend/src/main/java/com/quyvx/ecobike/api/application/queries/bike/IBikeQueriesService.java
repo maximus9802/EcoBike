@@ -13,4 +13,6 @@ public interface IBikeQueriesService {
     Optional<BikeDetails> findBikeWithoutTracker(Long id);
 
     List<BikeDetails> getAllBikeDetails();
+
+    Integer countBikeAvailable(Long dockId);
 }

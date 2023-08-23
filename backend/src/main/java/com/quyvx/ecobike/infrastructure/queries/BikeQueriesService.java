@@ -35,4 +35,9 @@ public class BikeQueriesService implements IBikeQueriesService {
                 .map(bikeEntity -> findBikeWithoutTracker(bikeEntity.getId()).orElse(null))
                 .toList();
     }
+
+    @Override
+    public Integer countBikeAvailable(Long dockId) {
+        return bikeJpaRepository.countBikeAvailableByDockId(dockId);
+    }
 }

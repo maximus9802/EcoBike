@@ -27,4 +27,10 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, Long>, JpaS
     Optional<BikeDetails> findByWithoutTracker(@Param("id") Long id);
 
     List<BikeEntity> findAll();
+
+    @Query(value = "SELECT COUNT " +
+            "FROM bike as b " +
+            "LEFT JOIN status_bike as sb ON b.status_id = sb.id" +
+            "WHERE b.dock_id = :dockId AND sb.status_name = 'free' ", nativeQuery = true)
+    Integer countBikeAvailableByDockId(@Param("dockId") Long dockId);
 }
