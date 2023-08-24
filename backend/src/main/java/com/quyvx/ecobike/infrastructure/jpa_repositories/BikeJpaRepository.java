@@ -41,7 +41,7 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, Long>, JpaS
 //            "b.license_plate as licensePlate, b.deposit as deposit, tb.type_name as type, sb.status_name as status, b.dock_id as dock, bt.id as tracker " +
 //            "FROM bike as b " +
 //            "LEFT JOIN type_bike as tb ON b.type_id = tb.id " +
-//            "LEFT JOIN status_bike as sb sb.id = b.status_id " +
+//            "LEFT JOIN status_bike as sb ON sb.id = b.status_id " +
 //            "JOIN bike_tracker as bt ON bt.bike_id = b.id ", nativeQuery = true)
 //    List<BikeSummary> getAllBikeInDock(@Param("dockId") Long dockId);
     @Query(value = "SELECT b.id as id, b.price as price, b.battery as battery, b.code as barCode, b.license_plate as licensePlate, tb.type_name as type, sb.status_name as status " +
@@ -50,5 +50,12 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, Long>, JpaS
             "LEFT JOIN status_bike as sb ON b.status_id = sb.id " +
             "WHERE b.dock_id = :dockId AND sb.status_name = 'free' ", nativeQuery = true)
     List<BikeInfo> getBikeInfoInDock(@Param("dockId") Long dockId);
+    @Query(value = "SELECT b.id as id, b.description as description, b.price as price, b.battery as battery, b.code as code, b.link_image as linkImage, " +
+            "b.license_plate as licensePlate, b.deposit as deposit, tb.type_name as type, sb.status_name as status, b.dock_id as dock, tb.id as tracker " +
+            "FROM bike as b " +
+            "LEFT JOIN type_bike as tb ON b.type_id = tb.id " +
+            "LEFT JOIN status_bike as sb ON sb.id = b.status_id " +
+            "WHERE b.id = :bikeId ", nativeQuery = true)
+    Optional<BikeSummary> getBikeSummaryByBikeId(@Param("bikeId") Long bikeId );
 
 }

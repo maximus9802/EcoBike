@@ -4,7 +4,10 @@ import an.awesome.pipelinr.Pipeline;
 import com.quyvx.ecobike.api.application.commands.bike.create.CreateBikeCommand;
 import com.quyvx.ecobike.api.application.models.TypeTrackerIdRequest;
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
+import com.quyvx.ecobike.api.application.models.bike.BikeSummary;
+import com.quyvx.ecobike.api.application.models.rent.RentDetail;
 import com.quyvx.ecobike.api.application.queries.bike.BikeQueries;
+import com.quyvx.ecobike.api.application.queries.bike.IBikeQueriesService;
 import com.quyvx.ecobike.api.application.queries.biketracker.BikeTrackerQueries;
 import com.quyvx.ecobike.api.application.services.BikeService;
 import com.quyvx.ecobike.api.application.services.TrackerService;
@@ -33,6 +36,7 @@ public class BikeController {
     private final TrackerService trackerService;
     private final BikeQueries bikeQueries;
     private final BikeTrackerQueries bikeTrackerQueries;
+    private final IBikeQueriesService bikeQueriesService;
 
     @PostMapping("")
     public CreateBikeResDto createBike(@RequestBody CreateBikeReqDto request){
@@ -60,8 +64,12 @@ public class BikeController {
     }
 
     @GetMapping("{id}")
-    public BikeDetails getBikeById(@PathVariable Long id){
-        if(bikeService.checkBikeFree(id)) return bikeQueries.getBikeDetailsById(id);
+    public BikeSummary getBikeById(@PathVariable Long id){
+        return bikeQueriesService.getBikeDetail(id).orElseThrow(()-> new RuntimeException("Not_found_bike"));
+    }
+
+    @GetMapping("{id}/rent")
+    public RentDetail getRentInfoDetail(@PathVariable Long id){
         return null;
     }
 

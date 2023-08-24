@@ -39,6 +39,11 @@ public class BikeQueriesService implements IBikeQueriesService {
     }
 
     @Override
+    public Optional<BikeSummary> getBikeDetail(Long bikeId) {
+        return bikeJpaRepository.getBikeSummaryByBikeId(bikeId);
+    }
+
+    @Override
     public Integer countBikeAvailable(Long dockId) {
         return bikeJpaRepository.countBikeAvailableByDockId(dockId);
     }
