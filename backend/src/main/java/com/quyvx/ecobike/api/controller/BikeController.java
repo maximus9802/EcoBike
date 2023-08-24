@@ -70,7 +70,7 @@ public class BikeController {
 
     @GetMapping("{id}/rent")
     public RentDetail getRentInfoDetail(@PathVariable Long id){
-        return null;
+        return trackerService.getRentDetailToNow(id);
     }
 
     @GetMapping("")

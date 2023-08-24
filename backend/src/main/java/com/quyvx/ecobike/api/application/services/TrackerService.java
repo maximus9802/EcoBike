@@ -1,6 +1,9 @@
 package com.quyvx.ecobike.api.application.services;
 
+import com.quyvx.ecobike.api.application.models.rent.RentDetail;
 import com.quyvx.ecobike.api.application.models.tracker.RentInfo;
+import com.quyvx.ecobike.api.application.models.tracker.TrackerSummary;
+import com.quyvx.ecobike.api.application.queries.bike.IBikeQueriesService;
 import com.quyvx.ecobike.api.application.queries.biketracker.IBikeTrackerQueriesService;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
 import com.quyvx.ecobike.domain.aggregate_models.BikeTracker;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -22,6 +26,7 @@ public class TrackerService {
     private final IBikeTrackerQueriesService bikeTrackerQueriesService;
     private final BikeTrackerRepository bikeTrackerRepository;
     private final ITypeTrackerQueriesService typeTrackerQueriesService;
+    private final IBikeQueriesService bikeQueriesService;
     public RentInfo viewRentInfoToNow(Long bikeId){
         BikeTracker bikeTracker =
                 bikeTrackerRepository.findById(bikeTrackerQueriesService.findBikeTrackerByBikeId(bikeId).getId())
@@ -47,7 +52,7 @@ public class TrackerService {
         if (duration > 10 && duration <= 30) {
             cash += 10000;
         } else if (duration > 30) {
-            cash += 10000 + ((duration - 30)/10 + 1) * 3000;
+            cash += 10000 + ((duration - 30)/15 + 1) * 3000;
         }
         return Double.valueOf(cash * getFeeFactor(typeRent)).longValue();
     }
@@ -75,5 +80,19 @@ public class TrackerService {
         saveTracker.setEnd(LocalDateTime.now());
         saveTracker.setStatus(BikeTracker.INACTIVE_STATUS);
         return bikeTrackerRepository.save(saveTracker);
+    }
+
+    public RentDetail getRentDetailToNow(Long bikeId){
+        TrackerSummary trackerSummary = bikeTrackerQueriesService.getTrackerSummaryByBikeId(bikeId).orElseThrow(()-> new RuntimeException("not_found"));
+        String typeBike = bikeQueriesService.getTypeBikeByBikeId(bikeId);
+        Long timeRented = calculateDuration(trackerSummary.getStartTime(), LocalDateTime.now());
+        Long cash = calculateCash(timeRented, typeBike);
+
+        return RentDetail.builder()
+                .startTime(trackerSummary.getStartTime())
+                .timeRented(timeRented)
+                .status(trackerSummary.getStatus())
+                .cash(BigDecimal.valueOf(cash))
+                .build();
     }
 }

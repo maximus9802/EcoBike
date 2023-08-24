@@ -18,6 +18,8 @@ public interface IBikeQueriesService {
 
     Optional<BikeSummary> getBikeDetail(Long bikeId);
 
+    String getTypeBikeByBikeId(Long bikeId);
+
     Integer countBikeAvailable(Long dockId);
 
     List<BikeInfo> getAllBikeInDock(Long dockId);
