@@ -26,6 +26,7 @@ public class DockEntityMapper {
                 .id(model.getId())
                 .name(model.getName())
                 .description(model.getDescription())
+                .linkImage(model.getLinkImage())
                 .location(model.getLocation())
                 .build();
         List<BikeEntity> bikeEntities = new ArrayList<>();
@@ -71,6 +72,7 @@ public class DockEntityMapper {
                 .id(entity.getId())
                 .location(entity.getLocation())
                 .description(entity.getDescription())
+                .linkImage(entity.getLinkImage())
                 .name(entity.getName())
                 .bikes(bikes)
                 .build();

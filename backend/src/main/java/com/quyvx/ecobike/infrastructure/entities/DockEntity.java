@@ -25,6 +25,9 @@ public class DockEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "link_image", columnDefinition = "TEXT")
+    private String linkImage;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dock")
     private List<BikeEntity> bikes;
 }

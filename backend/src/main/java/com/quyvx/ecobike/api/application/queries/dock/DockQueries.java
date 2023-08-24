@@ -1,5 +1,6 @@
 package com.quyvx.ecobike.api.application.queries.dock;
 
+import com.quyvx.ecobike.api.application.models.dock.DockDetails;
 import com.quyvx.ecobike.api.application.models.dock.DockInfo;
 import com.quyvx.ecobike.api.application.models.dock.DockSummary;
 import com.quyvx.ecobike.api.application.queries.bike.IBikeQueriesService;
@@ -41,6 +42,17 @@ public class DockQueries {
             newlist.add(dockInfo);
         }
         return newlist;
+    }
+
+    public DockDetails getDockDetails(Long dockId){
+        DockSummary dockSummary = dockQueriesService.findDockByDockId(dockId).orElseThrow(()-> new RuntimeException("no_found_dock"));
+        return DockDetails.builder()
+                .id(dockSummary.getId())
+                .name(dockSummary.getName())
+                .location(dockSummary.getLocation())
+                .description(dockSummary.getDescription())
+                .bikes(bikeQueriesService.getAllBikeInDock(dockId))
+                .build();
     }
 
 }

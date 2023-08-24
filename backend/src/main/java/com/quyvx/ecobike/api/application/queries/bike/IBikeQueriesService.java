@@ -1,6 +1,8 @@
 package com.quyvx.ecobike.api.application.queries.bike;
 
 import com.quyvx.ecobike.api.application.models.bike.BikeDetails;
+import com.quyvx.ecobike.api.application.models.bike.BikeInfo;
+import com.quyvx.ecobike.api.application.models.bike.BikeSummary;
 import com.quyvx.ecobike.infrastructure.entities.BikeEntity;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface IBikeQueriesService {
     List<BikeDetails> getAllBikeDetails();
 
     Integer countBikeAvailable(Long dockId);
+
+    List<BikeInfo> getAllBikeInDock(Long dockId);
 }

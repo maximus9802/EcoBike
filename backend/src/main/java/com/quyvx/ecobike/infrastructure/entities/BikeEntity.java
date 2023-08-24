@@ -30,7 +30,7 @@ public class BikeEntity  {
     @Column(name = "code", columnDefinition = "uuid", updatable = false)
     private UUID code;
 
-    @Column(name = "link_image")
+    @Column(name = "link_image", columnDefinition = "TEXT")
     private String linkImage;
 
     @Column(name = "license_plate")

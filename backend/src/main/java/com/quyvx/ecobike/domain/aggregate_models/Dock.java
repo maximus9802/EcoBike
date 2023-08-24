@@ -13,6 +13,8 @@ public class Dock {
     private Long id;
     private String location;
     private String description;
+
+    private String linkImage;
     private String name;
     private List<Bike> bikes;
 }

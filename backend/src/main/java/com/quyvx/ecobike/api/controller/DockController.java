@@ -2,6 +2,7 @@ package com.quyvx.ecobike.api.controller;
 
 import an.awesome.pipelinr.Pipeline;
 import com.quyvx.ecobike.api.application.commands.dock.create.CreateDockCommand;
+import com.quyvx.ecobike.api.application.models.dock.DockDetails;
 import com.quyvx.ecobike.api.application.models.dock.DockInfo;
 import com.quyvx.ecobike.api.application.queries.dock.DockQueries;
 import com.quyvx.ecobike.api.dto.dock.CreateDockReqDto;
@@ -38,7 +39,7 @@ public class DockController {
     }
 
     @GetMapping("{dockId}")
-    public Dock getDockById(@PathVariable Long dockId) {
-        return dockQueries.getDockById(dockId).orElse(null);
+    public DockDetails getDockById(@PathVariable Long dockId) {
+        return dockQueries.getDockDetails(dockId);
     }
 }
