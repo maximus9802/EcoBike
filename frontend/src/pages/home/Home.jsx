@@ -1,10 +1,28 @@
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import EachDock from "../../components/EachDock";
 
 const Home = () => {
+  const [listDock, setListDock] = useState([])
+
+  useEffect(()=>{
+    const fetchData = async() =>{
+      try{
+        const res = await axios.get('localhost:6868/api/docks')
+        setListDock(res.data)
+      }catch(err){
+        console.log("error to fetch data listDock: ", err)
+      }
+    }
+    fetchData()
+  },[])
+  if(!listDock)
+
   return (
-    <div className="home">
-      <h2 className="">Welcome to EcoBikeRental</h2>
-      <p>Explore the world on two wheels with EcoBikeRental.</p>
-      {/* Add more content as needed */}
+    <div>
+      {listDock.map((eachDock, index)=>(
+        <EachDock key={index} data = {eachDock}/>
+      ))}
     </div>
   );
 };
