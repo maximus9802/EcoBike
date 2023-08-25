@@ -2,10 +2,10 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 
 const BikeInfo = () => {    
-    const id = 1;
+    const id = 3;
     const [bike, setBike] = useState({});
     useEffect(() =>{
-        const bikeInfoUrl = `http://localhost:6868/api/bikes/3`
+        const bikeInfoUrl = `http://localhost:6868/api/bikes/get-bike/${id}`
         const bikeTrackerUrl = `http://localhost:6868/api/tracker/${id}`
         axios.get(bikeInfoUrl).then((response) => {
             setBike(response.data);

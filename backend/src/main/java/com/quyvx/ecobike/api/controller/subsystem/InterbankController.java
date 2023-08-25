@@ -20,11 +20,8 @@ import java.util.Objects;
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173"})
 public class InterbankController {
-    @Autowired
     private final CardService cardService;
-    @Autowired
     private final TransactionService transactionService;
-    @Autowired
     private final RestTemplate restTemplate;
 
     @PutMapping("processTransaction")

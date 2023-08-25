@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:6868")
 public class CardController {
-    @Autowired
     private final CardService cardService;
 
     @GetMapping("get-balance/{cardCode}")
