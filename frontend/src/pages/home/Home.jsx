@@ -8,7 +8,8 @@ const Home = () => {
   useEffect(()=>{
     const fetchData = async() =>{
       try{
-        const res = await axios.get('localhost:6868/api/docks')
+        const res = await axios.get('http://localhost:6868/api/docks')
+        // console.log(res.data)
         setListDock(res.data)
       }catch(err){
         console.log("error to fetch data listDock: ", err)
@@ -16,10 +17,17 @@ const Home = () => {
     }
     fetchData()
   },[])
-  if(!listDock)
+  if(!listDock){
+    return(
+      <div>
+        Loading...
+      </div>
+    )
+  }
 
   return (
     <div>
+      <div className="text-center text-5xl font-bold">All Docks</div>
       {listDock.map((eachDock, index)=>(
         <EachDock key={index} data = {eachDock}/>
       ))}
