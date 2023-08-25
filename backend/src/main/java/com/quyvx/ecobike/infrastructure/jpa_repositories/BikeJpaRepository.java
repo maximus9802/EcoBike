@@ -20,6 +20,11 @@ public interface BikeJpaRepository extends JpaRepository<BikeEntity, Long>, JpaS
             "LEFT JOIN status_bike as sb ON b.status_id = sb.id " +
             "WHERE b.id = :id", nativeQuery = true)
     String findStatusBikeById(@Param("id") Long id);
+    @Query(value = "SELECT tb.type_name " +
+            "FROM bike as b " +
+            "LEFT JOIN  type_bike as tb ON b.type_id = tb.id " +
+            "WHERE b.id = :bikeId ", nativeQuery = true)
+    String getTypeBikeByBikeId(@Param("bikeId") Long bikeId);
 
     @Query(value = "SELECT b.id as id, b.battery as battery, b.description as description, b.link_image as linkImage, "+
             "b.price as price, tb.type_name as type, b.code as code, b.license_plate as licensePlate, b.deposit as deposit, b.dock_id as dockId " +

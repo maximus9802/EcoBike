@@ -1,9 +1,12 @@
 package com.quyvx.ecobike.infrastructure.queries;
 
+import com.quyvx.ecobike.api.application.models.tracker.TrackerSummary;
 import com.quyvx.ecobike.api.application.queries.typetracker.ITypeTrackerQueriesService;
 import com.quyvx.ecobike.infrastructure.jpa_repositories.TypeTrackerJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
